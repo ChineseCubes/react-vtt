@@ -1,0 +1,29 @@
+{
+  "name": "jsl-seed",
+  "version": "0.0.1",
+  "description": "the seed for Jade, Stylus, LiveScript apps",
+  "main": "main.js",
+  "scripts": {
+    "start": "gulp --require LiveScript",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "caasi Huang",
+  "license": "MIT",
+  "devDependencies": {
+    "LiveScript": "^1.2.0",
+    "gulp": "^3.5.5",
+    "gulp-util": "^2.2.14",
+    "gulp-concat": "^2.1.7",
+    "gulp-livescript": "^0.2.0",
+    "gulp-stylus": "^0.1.0",
+    "gulp-jade": "^0.4.2",
+    "gulp-livereload": "^1.2.0",
+    "gulp-bower-files": "^0.1.12",
+    "node-static": "^0.7.3",
+    "tiny-lr": "0.0.5",
+    "nib": "^1.0.2",
+    "gulp-bower": "0.0.4",
+    "gulp-filter": "^0.4.1"
+  }
+}
