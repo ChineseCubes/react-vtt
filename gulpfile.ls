@@ -41,7 +41,7 @@ gulp.task \js:app ->
 
 gulp.task \css:vendor <[bower]> ->
   gulp-bower-files!
-  .pipe gulp-filter '**/*.css'
+  .pipe gulp-filter <[**/*.css !**/*.min.css]>
   .pipe gulp-concat 'vendor.css'
   .pipe gulp.dest "#{path.build}/css"
 
