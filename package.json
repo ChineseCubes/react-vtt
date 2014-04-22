@@ -13,17 +13,18 @@
   "devDependencies": {
     "LiveScript": "^1.2.0",
     "gulp": "^3.5.5",
-    "gulp-util": "^2.2.14",
+    "gulp-bower": "0.0.4",
+    "gulp-bower-files": "^0.1.12",
     "gulp-concat": "^2.1.7",
-    "gulp-livescript": "^0.2.0",
-    "gulp-stylus": "^0.1.0",
+    "gulp-filter": "^0.4.1",
+    "gulp-flatten": "0.0.2",
     "gulp-jade": "^0.4.2",
     "gulp-livereload": "^1.2.0",
-    "gulp-bower-files": "^0.1.12",
-    "node-static": "^0.7.3",
-    "tiny-lr": "0.0.5",
+    "gulp-livescript": "^0.2.0",
+    "gulp-stylus": "^0.1.0",
+    "gulp-util": "^2.2.14",
     "nib": "^1.0.2",
-    "gulp-bower": "0.0.4",
-    "gulp-filter": "^0.4.1"
+    "node-static": "^0.7.3",
+    "tiny-lr": "0.0.5"
   }
 }

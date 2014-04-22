@@ -20,5 +20,10 @@
   "dependencies": {
     "jquery": "~2.1.0",
     "semantic-ui": "~0.15.5"
+  },
+  "overrides": {
+    "semantic-ui": {
+      "main": "build/packaged/**/*"
+    }
   }
 }
