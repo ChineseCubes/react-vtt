@@ -1,4 +1,4 @@
-require! <[gulp gulp-concat gulp-livereload gulp-bower gulp-bower-files gulp-filter gulp-flatten node-static tiny-lr]>
+require! <[bower gulp gulp-concat gulp-livereload gulp-bower-files gulp-filter gulp-flatten node-static tiny-lr]>
 gutil             = require \gulp-util
 livescript        = require \gulp-livescript
 stylus            = require \gulp-stylus
@@ -10,7 +10,13 @@ path =
   src:   './src'
   build: '.'
 
-gulp.task \bower -> gulp-bower!
+gulp.task \bower ->
+  bower.commands.install!on \end (results) ->
+    for pkg, data of results
+      gutil.log do
+        gutil.colors.magenta(data.pkgMeta.name)
+        gutil.colors.cyan(data.pkgMeta.version)
+        "installed"
 
 gulp.task \fonts:vendor <[bower]> ->
   gulp-bower-files!
@@ -64,7 +70,13 @@ gulp.task \html ->
 
 gulp.task \build <[vendor js:app css:app html]>
 
-gulp.task \server (next) ->
+gulp.task \watch <[build]> ->
+  gulp.watch 'bower.json'             <[vendor]>
+  gulp.watch "#{path.src}/**/*.ls"    <[js:app]>
+  gulp.watch "#{path.src}/**/*.styl"  <[css:app]>
+  gulp.watch "#{path.src}/*.jade"     <[html]>
+
+gulp.task \server <[watch]> (next) ->
   server = new node-static.Server path.build
   port = 8888
   require \http .createServer (req, res) !->
@@ -73,16 +85,11 @@ gulp.task \server (next) ->
     gutil.log "Server listening on port: #{gutil.colors.magenta port}"
     next!
 
-gulp.task \watch ->
-  gulp.watch 'bower.json'             <[vendor]>
-  gulp.watch "#{path.src}/**/*.ls"    <[js:app]>
-  gulp.watch "#{path.src}/**/*.styl"  <[css:app]>
-  gulp.watch "#{path.src}/*.jade"     <[html]>
-
-gulp.task \livereload ->
+gulp.task \livereload <[server]> (next) ->
   port = 35729
   livereload-server.listen port, ->
     return gulp.log it if it
     gutil.log "LiveReload listening on port: #{gutil.colors.magenta port}"
+    next!
 
-gulp.task \default <[build watch server livereload]>
+gulp.task \default <[livereload]>
