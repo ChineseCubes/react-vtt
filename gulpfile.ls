@@ -14,8 +14,8 @@ gulp.task \bower ->
   bower.commands.install!on \end (results) ->
     for pkg, data of results
       gutil.log do
-        gutil.colors.magenta(data.pkgMeta.name)
-        gutil.colors.cyan(data.pkgMeta.version)
+        gutil.colors.magenta data.pkgMeta.name
+        gutil.colors.cyan data.pkgMeta.version
         "installed"
 
 gulp.task \fonts:vendor <[bower]> ->
