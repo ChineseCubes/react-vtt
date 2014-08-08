@@ -1,10 +1,12 @@
-require! <[bower gulp gulp-concat gulp-livereload gulp-bower-files gulp-filter gulp-flatten node-static tiny-lr]>
+require! <[gulp gulp-concat gulp-filter gulp-flatten]>
+require! <[bower main-bower-files]>
+require! <[gulp-webserver]>
 gutil             = require \gulp-util
 livescript        = require \gulp-livescript
 stylus            = require \gulp-stylus
 jade              = require \gulp-jade
-livereload-server = tiny-lr!
-livereload        = -> gulp-livereload livereload-server
+
+console.log gulp-webserver
 
 path =
   src:   './src'
@@ -18,78 +20,65 @@ gulp.task \bower ->
         gutil.colors.cyan data.pkgMeta.version
         "installed"
 
+files = main-bower-files!
 gulp.task \fonts:vendor <[bower]> ->
-  gulp-bower-files!
-  .pipe gulp-filter <[**/*.eof **/*.ttf **/*.svg **/*.woff]>
-  .pipe gulp-flatten!
-  .pipe gulp.dest "#{path.build}/fonts"
+  gulp.src files
+    .pipe gulp-filter <[**/*.eof **/*.ttf **/*.svg **/*.woff]>
+    .pipe gulp-flatten!
+    .pipe gulp.dest "#{path.build}/fonts"
 
 gulp.task \images:vendor <[bower]> ->
-  gulp-bower-files!
-  .pipe gulp-filter <[**/*.jpg **/*.jpeg **/*.png **/*.gif]>
-  .pipe gulp-flatten!
-  .pipe gulp.dest "#{path.build}/images"
+  gulp.src files
+    .pipe gulp-filter <[**/*.jpg **/*.jpeg **/*.png **/*.gif]>
+    .pipe gulp-flatten!
+    .pipe gulp.dest "#{path.build}/images"
 
 gulp.task \js:vendor <[bower]> ->
-  gulp-bower-files!
-  .pipe gulp-filter <[**/*.js !**/*.min.js]>
-  .pipe gulp-concat 'vendor.js'
-  .pipe gulp.dest "#{path.build}/js"
+  gulp.src files
+    .pipe gulp-filter <[**/*.js !**/*.min.js]>
+    .pipe gulp-concat 'vendor.js'
+    .pipe gulp.dest "#{path.build}/js"
 
 gulp.task \js:app ->
-  gulp.src do
-    * "#{path.src}/**/*.ls"
-    ...
-  .pipe gulp-concat 'main.ls'
-  .pipe livescript!
-  .pipe gulp.dest "#{path.build}/js"
-  .pipe livereload!
+  gulp.src [
+    "#{path.src}/**/*.ls"
+  ]
+    .pipe gulp-concat 'main.ls'
+    .pipe livescript!
+    .pipe gulp.dest "#{path.build}/js"
 
 gulp.task \css:vendor <[bower]> ->
-  gulp-bower-files!
-  .pipe gulp-filter <[**/*.css !**/*.min.css]>
-  .pipe gulp-concat 'vendor.css'
-  .pipe gulp.dest "#{path.build}/css"
+  gulp.src files
+    .pipe gulp-filter <[**/*.css !**/*.min.css]>
+    .pipe gulp-concat 'vendor.css'
+    .pipe gulp.dest "#{path.build}/css"
 
 gulp.task \css:app ->
-  gulp.src do
-    * "#{path.src}/**/*.styl"
-    ...
-  .pipe gulp-concat 'style.styl'
-  .pipe stylus use: <[nib]>
-  .pipe gulp.dest "#{path.build}/css"
-  .pipe livereload!
+  gulp.src [
+    "#{path.src}/**/*.styl"
+  ]
+    .pipe gulp-concat 'style.styl'
+    .pipe stylus use: <[nib]>
+    .pipe gulp.dest "#{path.build}/css"
 
 gulp.task \vendor <[fonts:vendor images:vendor js:vendor css:vendor]>
 
 gulp.task \html ->
   gulp.src "#{path.src}/*.jade"
-  .pipe jade!
-  .pipe gulp.dest path.build
-  .pipe livereload!
+    .pipe jade!
+    .pipe gulp.dest path.build
 
 gulp.task \build <[vendor js:app css:app html]>
 
 gulp.task \watch <[build]> ->
-  gulp.watch 'bower.json'             <[vendor]>
-  gulp.watch "#{path.src}/**/*.ls"    <[js:app]>
-  gulp.watch "#{path.src}/**/*.styl"  <[css:app]>
-  gulp.watch "#{path.src}/*.jade"     <[html]>
+  gulp
+    ..watch 'bower.json'             <[vendor]>
+    ..watch "#{path.src}/**/*.ls"    <[js:app]>
+    ..watch "#{path.src}/**/*.styl"  <[css:app]>
+    ..watch "#{path.src}/*.jade"     <[html]>
 
 gulp.task \server <[watch]> (next) ->
-  server = new node-static.Server path.build
-  port = 8888
-  require \http .createServer (req, res) !->
-    req.addListener(\end -> server.serve req, res)resume!
-  .listen port, !->
-    gutil.log "Server listening on port: #{gutil.colors.magenta port}"
-    next!
+  gulp.src path.build
+    .pipe gulp-webserver livereload: on
 
-gulp.task \livereload <[server]> (next) ->
-  port = 35729
-  livereload-server.listen port, ->
-    return gulp.log it if it
-    gutil.log "LiveReload listening on port: #{gutil.colors.magenta port}"
-    next!
-
-gulp.task \default <[livereload]>
+gulp.task \default <[server]>
