@@ -1,6 +1,6 @@
 # react-vtt
 
-A React component for display WebVTT tracks.
+A React component for displaying WebVTT tracks.
 
 ## Usage
 

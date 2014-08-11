@@ -1,7 +1,7 @@
 {
   "name": "react-vtt",
   "version": "0.0.1",
-  "description": "A React component for display WebVTT tracks.",
+  "description": "A React component for displaying WebVTT tracks.",
   "main": "js/main.js",
   "scripts": {
     "start": "gulp",
