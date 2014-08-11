@@ -1,6 +1,6 @@
 {
   "name": "jsl-seed",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "the seed for Jade, Stylus, LiveScript apps",
   "main": "main.js",
   "scripts": {
@@ -23,10 +23,7 @@
     "gulp-livescript": "^0.2.1",
     "gulp-stylus": "^0.1.0",
     "gulp-util": "^2.2.20",
-    "gulp-webserver": "^0.6.0",
     "main-bower-files": "^1.0.2",
-    "nib": "^1.0.2",
-    "node-static": "^0.7.3",
-    "tiny-lr": "0.0.5"
+    "nib": "^1.0.2"
   }
 }
