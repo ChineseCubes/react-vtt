@@ -1,12 +1,10 @@
 require! <[gulp gulp-concat gulp-filter gulp-flatten]>
 require! <[bower main-bower-files]>
-require! <[gulp-webserver]>
-gutil             = require \gulp-util
-livescript        = require \gulp-livescript
-stylus            = require \gulp-stylus
-jade              = require \gulp-jade
-
-console.log gulp-webserver
+connect    = require \gulp-connect
+gutil      = require \gulp-util
+livescript = require \gulp-livescript
+stylus     = require \gulp-stylus
+jade       = require \gulp-jade
 
 path =
   src:   './src'
@@ -46,6 +44,7 @@ gulp.task \js:app ->
     .pipe gulp-concat 'main.ls'
     .pipe livescript!
     .pipe gulp.dest "#{path.build}/js"
+    .pipe connect.reload!
 
 gulp.task \css:vendor <[bower]> ->
   gulp.src files
@@ -60,6 +59,7 @@ gulp.task \css:app ->
     .pipe gulp-concat 'style.styl'
     .pipe stylus use: <[nib]>
     .pipe gulp.dest "#{path.build}/css"
+    .pipe connect.reload!
 
 gulp.task \vendor <[fonts:vendor images:vendor js:vendor css:vendor]>
 
@@ -67,6 +67,7 @@ gulp.task \html ->
   gulp.src "#{path.src}/*.jade"
     .pipe jade!
     .pipe gulp.dest path.build
+    .pipe connect.reload!
 
 gulp.task \build <[vendor js:app css:app html]>
 
@@ -77,8 +78,9 @@ gulp.task \watch <[build]> ->
     ..watch "#{path.src}/**/*.styl"  <[css:app]>
     ..watch "#{path.src}/*.jade"     <[html]>
 
-gulp.task \server <[watch]> (next) ->
-  gulp.src path.build
-    .pipe gulp-webserver livereload: on
+gulp.task \server <[watch]> ->
+  connect.server do
+    root: path.build
+    livereload: on
 
 gulp.task \default <[server]>
