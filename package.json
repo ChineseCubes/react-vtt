@@ -1,15 +1,15 @@
 {
-  "name": "jsl-seed",
-  "version": "0.0.3",
-  "description": "the seed for Jade, Stylus, LiveScript apps",
-  "main": "main.js",
+  "name": "react-vtt",
+  "version": "0.0.1",
+  "description": "A React component for display WebVTT tracks.",
+  "main": "js/main.js",
   "scripts": {
     "start": "gulp",
     "prepublish": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "caasi Huang",
+  "keywords": ["WebVTT", "React"],
+  "author": "caasi Huang <caasi@chinesecubes.com>",
   "license": "MIT",
   "devDependencies": {
     "LiveScript": "^1.2.0",

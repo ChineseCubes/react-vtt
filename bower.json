@@ -1,11 +1,11 @@
 {
-  "name": "jsl-seed",
-  "version": "0.0.3",
-  "homepage": "https://github.com/caasi/jsl-seed",
+  "name": "react-vtt",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ChineseCubes/react-vtt",
   "authors": [
-    "caasi Huang <caasi.igd@gmail.com>"
+    "caasi Huang <caasi@chinesecubes.com>"
   ],
-  "main": "main.js",
+  "main": "js/main.js",
   "moduleType": [
     "globals"
   ],
@@ -15,15 +15,17 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "css",
+    "fonts",
+    "images",
+    "src",
+    "package.json",
+    "js/vendor.js"
   ],
   "dependencies": {
-    "jquery": "~2.1.0",
-    "semantic-ui": "~0.15.5"
+    "jquery": "~2.1.0"
   },
   "overrides": {
-    "semantic-ui": {
-      "main": "build/packaged/**/*"
-    }
   }
 }
