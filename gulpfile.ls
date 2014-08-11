@@ -18,21 +18,20 @@ gulp.task \bower ->
         gutil.colors.cyan data.pkgMeta.version
         "installed"
 
-files = main-bower-files!
 gulp.task \fonts:vendor <[bower]> ->
-  gulp.src files
+  gulp.src main-bower-files!
     .pipe gulp-filter <[**/*.eof **/*.ttf **/*.svg **/*.woff]>
     .pipe gulp-flatten!
     .pipe gulp.dest "#{path.build}/fonts"
 
 gulp.task \images:vendor <[bower]> ->
-  gulp.src files
+  gulp.src main-bower-files!
     .pipe gulp-filter <[**/*.jpg **/*.jpeg **/*.png **/*.gif]>
     .pipe gulp-flatten!
     .pipe gulp.dest "#{path.build}/images"
 
 gulp.task \js:vendor <[bower]> ->
-  gulp.src files
+  gulp.src main-bower-files!
     .pipe gulp-filter <[**/*.js !**/*.min.js]>
     .pipe gulp-concat 'vendor.js'
     .pipe gulp.dest "#{path.build}/js"
@@ -47,7 +46,7 @@ gulp.task \js:app ->
     .pipe connect.reload!
 
 gulp.task \css:vendor <[bower]> ->
-  gulp.src files
+  gulp.src main-bower-files!
     .pipe gulp-filter <[**/*.css !**/*.min.css]>
     .pipe gulp-concat 'vendor.css'
     .pipe gulp.dest "#{path.build}/css"
