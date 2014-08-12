@@ -1,5 +1,5 @@
 require! <[gulp gulp-concat gulp-filter gulp-flatten]>
-require! <[bower main-bower-files]>
+require! <[bower main-bower-files streamqueue]>
 connect    = require \gulp-connect
 gutil      = require \gulp-util
 livescript = require \gulp-livescript
@@ -7,8 +7,9 @@ stylus     = require \gulp-stylus
 jade       = require \gulp-jade
 
 path =
-  src:   './src'
-  build: '.'
+  src:    './src'
+  vendor: './vendor'
+  build:  '.'
 
 gulp.task \bower ->
   bower.commands.install!on \end (results) ->
@@ -31,8 +32,11 @@ gulp.task \images:vendor <[bower]> ->
     .pipe gulp.dest "#{path.build}/images"
 
 gulp.task \js:vendor <[bower]> ->
-  gulp.src main-bower-files!
-    .pipe gulp-filter <[**/*.js !**/*.min.js]>
+  streamqueue(
+    objectMode: on
+    gulp.src main-bower-files! .pipe gulp-filter <[**/*.js !**/*.min.js]>
+    gulp.src "#{path.vendor}/**/*.js"
+  )
     .pipe gulp-concat 'vendor.js'
     .pipe gulp.dest "#{path.build}/js"
 

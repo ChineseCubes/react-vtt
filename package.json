@@ -8,7 +8,10 @@
     "prepublish": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["WebVTT", "React"],
+  "keywords": [
+    "WebVTT",
+    "React"
+  ],
   "author": "caasi Huang <caasi@chinesecubes.com>",
   "license": "MIT",
   "devDependencies": {
@@ -24,6 +27,7 @@
     "gulp-stylus": "^0.1.0",
     "gulp-util": "^2.2.20",
     "main-bower-files": "^1.0.2",
-    "nib": "^1.0.2"
+    "nib": "^1.0.2",
+    "streamqueue": "^0.1.1"
   }
 }

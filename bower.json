@@ -24,8 +24,8 @@
     "js/vendor.js"
   ],
   "dependencies": {
-    "jquery": "~2.1.0"
+    "jquery": "~2.1.0",
+    "vtt.js": "~0.11.11"
   },
-  "overrides": {
-  }
+  "overrides": {}
 }
