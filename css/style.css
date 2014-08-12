@@ -92,9 +92,18 @@ a img {
 body {
   background: #16161d;
 }
+body #wrap {
+  width: 480px;
+  margin: 0 auto;
+  text-align: center;
+}
+body #wrap video {
+  width: 480px;
+  height: 360px;
+}
 .react-vtt {
   margin-top: 1em;
-  font-size: 140%;
+  font-size: 100%;
   -webkit-font-smoothing: antialiased;
 }
 .react-vtt.active-cues .cue {
@@ -108,5 +117,6 @@ body {
   position: absolute;
   left: 0;
   top: 0;
+  bottom: -0.5em;
   color: #f90;
 }

@@ -43,6 +43,8 @@ this.ReactVTT ?=
       children = if @state.track.active-cues
         for let i from 0 til @state.track.active-cues.length
           cue = @state.track.active-cues[i]
+          # FIXME: should deal with cue payload text tags
+          text = cue.text.replace /<.*?>/g, ''
           # the resolution of e.timeStamp in FireFox is 100x than other
           # browsers and the event fires more frequently, so we should use
           # video.currentTime instead of e.timeStamp
@@ -51,12 +53,12 @@ this.ReactVTT ?=
           span do
             key: i
             className: 'cue'
-            cue.text
+            text
             span do
               className: 'actived'
               style:
                 width: "#ratio%"
-              cue.text
+              text
       else []
       ol do
         className: 'react-vtt active-cues'

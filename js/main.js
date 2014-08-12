@@ -60,19 +60,20 @@
           }
           return results$;
           function fn$(i){
-            var cue, delta, ratio;
+            var cue, text, delta, ratio;
             cue = this.state.track.activeCues[i];
+            text = cue.text.replace(/<.*?>/g, '');
             delta = this.state.media.currentTime - cue.startTime;
             ratio = 100 * delta / (cue.endTime - cue.startTime);
             return span({
               key: i,
               className: 'cue'
-            }, cue.text, span({
+            }, text, span({
               className: 'actived',
               style: {
                 width: ratio + "%"
               }
-            }, cue.text));
+            }, text));
           }
         }.call(this))
         : [];
