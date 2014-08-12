@@ -89,3 +89,23 @@ td {
 a img {
   border: none;
 }
+body {
+  background: #16161d;
+}
+.react-vtt {
+  margin-top: 1em;
+  font-size: 140%;
+}
+.react-vtt.active-cues .cue {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+}
+.react-vtt.active-cues .cue .actived {
+  overflow: hidden;
+  position: absolute;
+  white-space: pre;
+  left: 0;
+  top: 0;
+  color: #f90;
+}

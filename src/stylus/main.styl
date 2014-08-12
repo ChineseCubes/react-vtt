@@ -1,3 +1,22 @@
 @import 'nib'
 
 global-reset()
+
+body
+  background #16161D
+
+.react-vtt
+  margin-top 1em
+  font-size 140%
+  &.active-cues
+    .cue
+      position relative
+      display inline-block
+      color white
+      .actived
+        overflow hidden
+        position absolute
+        white-space pre
+        left 0
+        top 0
+        color #F90
