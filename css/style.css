@@ -90,10 +90,26 @@ a img {
   border: none;
 }
 body {
+  color: #fff;
   background: #16161d;
 }
+body h1,
+body h2,
+body hr {
+  margin-bottom: 1rem;
+}
+body h1 {
+  font-size: 200%;
+}
+body h2 {
+  font-size: 140%;
+}
+body hr {
+  border: 0;
+  border-bottom: 1px solid #333;
+}
 body #wrap {
-  width: 480px;
+  width: 900px;
   margin: 0 auto;
   text-align: center;
 }
@@ -101,9 +117,12 @@ body #wrap video {
   width: 480px;
   height: 360px;
 }
+body #wrap .active-cues {
+  margin: 1em auto;
+  height: 1em;
+}
 .react-vtt {
   margin-top: 1em;
-  font-size: 100%;
   -webkit-font-smoothing: antialiased;
 }
 .react-vtt.active-cues .cue {

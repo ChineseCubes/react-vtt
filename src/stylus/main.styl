@@ -3,18 +3,30 @@
 global-reset()
 
 body
+  color white
   background #16161D
+  h1, h2, hr
+    margin-bottom 1rem
+  h1
+    font-size 200%
+  h2
+    font-size 140%
+  hr
+    border 0
+    border-bottom 1px solid #333
   #wrap
-    width 480px
+    width 900px
     margin 0 auto
     text-align center
     video
       width  480px
       height 360px
+    .active-cues
+      margin 1em auto
+      height 1em
 
 .react-vtt
   margin-top 1em
-  font-size 100%
   font-smoothing antialiased
   &.active-cues
     .cue

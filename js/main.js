@@ -1,5 +1,5 @@
 (function(){
-  var ref$, span, ol;
+  var ref$, span, ol, x$;
   ref$ = React.DOM, span = ref$.span, ol = ref$.ol;
   this.ReactVTT == null && (this.ReactVTT = React.createClass({
     displayName: 'ReactVTT',
@@ -12,19 +12,18 @@
       };
     },
     componentWillMount: function(){
-      var $media, $track, track, tracks, i$, ref$, len$, attr, value, update, this$ = this;
-      $media = $('video');
-      if ($media.length === 0) {
-        $media = $('audio');
-      }
-      this.state.media = $media.get()[0];
-      if (!this.state.media) {
-        throw new Error('<video> or <audio> not found');
-      }
-      $track = $media.children(this.props.target);
+      var $track, track, tracks, i$, ref$, len$, attr, value, update, this$ = this;
+      $track = $(this.props.target);
       track = $track.get()[0];
       if (!track) {
         throw new Error("Target <track>: " + this.props.target + " not found");
+      }
+      this.state.media = $track.closest('video').get()[0];
+      if (!this.state.media) {
+        this.state.media = $track.closest('audio').get()[0];
+      }
+      if (!this.state.media) {
+        throw new Error('<video> or <audio> not found');
       }
       tracks = this.state.media.textTracks;
       for (i$ = 0, len$ = (ref$ = track.attributes).length; i$ < len$; ++i$) {
@@ -82,7 +81,11 @@
       }, children);
     }
   }));
-  React.renderComponent(ReactVTT({
-    target: 'track'
-  }), $('#react-vtt').get()[0]);
+  x$ = React;
+  x$.renderComponent(ReactVTT({
+    target: 'track#chocolate-rain'
+  }), $('#video-vtt').get()[0]);
+  x$.renderComponent(ReactVTT({
+    target: 'track#shared-culture'
+  }), $('#audio-vtt').get()[0]);
 }).call(this);

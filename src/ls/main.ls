@@ -9,17 +9,14 @@ this.ReactVTT ?=
       media: null
       track: null
     componentWillMount: !->
-      $media = $ \video
-      if $media.length is 0
-        $media = $ \audio
-      @state.media = $media.get!0
-      if not @state.media
-        throw new Error '<video> or <audio> not found'
       # find track in tracks
-      $track = $media.children @props.target
+      $track = $ @props.target
       track = $track.get!0
       if not track
         throw new Error "Target <track>: #{@props.target} not found"
+      @state.media = $track.closest \video .get!0
+      @state.media = $track.closest \audio .get!0    if not @state.media
+      throw new Error '<video> or <audio> not found' if not @state.media
       tracks = @state.media.text-tracks
       for attr in track.attributes
         value = if attr.value isnt '' then attr.value else true
@@ -64,6 +61,10 @@ this.ReactVTT ?=
         className: 'react-vtt active-cues'
         children
 
-React.renderComponent do
-  ReactVTT target: 'track'
-  $ \#react-vtt .get!0
+React
+  ..renderComponent do
+    ReactVTT target: 'track#chocolate-rain'
+    $ \#video-vtt .get!0
+  ..renderComponent do
+    ReactVTT target: 'track#shared-culture'
+    $ \#audio-vtt .get!0
