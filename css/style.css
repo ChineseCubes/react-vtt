@@ -95,16 +95,17 @@ body {
 .react-vtt {
   margin-top: 1em;
   font-size: 140%;
+  -webkit-font-smoothing: antialiased;
 }
 .react-vtt.active-cues .cue {
   position: relative;
+  white-space: nowrap;
   display: inline-block;
   color: #fff;
 }
 .react-vtt.active-cues .cue .actived {
   overflow: hidden;
   position: absolute;
-  white-space: pre;
   left: 0;
   top: 0;
   color: #f90;

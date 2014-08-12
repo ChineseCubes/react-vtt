@@ -1,4 +1,4 @@
-{div, ol} = React.DOM
+{span, ol} = React.DOM
 
 this.ReactVTT ?=
   React.createClass do
@@ -8,9 +8,7 @@ this.ReactVTT ?=
       attributes: {}
       media: null
       track: null
-    componentWillReceiveProps: !(props) ->
-      console.log props
-    componentDidMount: !->
+    componentWillMount: !->
       $media = $ \video
       if $media.length is 0
         $media = $ \audio
@@ -36,31 +34,33 @@ this.ReactVTT ?=
         throw new Error "Target TextTrack not found"
       # for better animation, requestAnimationFrame
       # is better than timeupdate event
-      #$media.on \timeupdate (e) ~> @forceUpdate!
+      #$media.on \timeupdate (e) ~> @forceUpdate! if @isMounted!
       update = ~>
         @forceUpdate! if @isMounted!
         requestAnimationFrame update
       requestAnimationFrame update
     render: ->
-      return ol! if not @state.track # element isnt mounted
-      ol do
-        className: 'react-vtt active-cues'
+      children = if @state.track.active-cues
         for let i from 0 til @state.track.active-cues.length
           cue = @state.track.active-cues[i]
           # the resolution of e.timeStamp in FireFox is 100x than other
           # browsers and the event fires more frequently, so we should use
           # video.currentTime instead of e.timeStamp
           delta = @state.media.current-time - cue.start-time
-          ratio = delta / (cue.end-time - cue.start-time)
-          div do
+          ratio = 100 * delta / (cue.end-time - cue.start-time)
+          span do
             key: i
             className: 'cue'
             cue.text
-            div do
+            span do
               className: 'actived'
               style:
-                width: "#{ratio * 100}%"
+                width: "#ratio%"
               cue.text
+      else []
+      ol do
+        className: 'react-vtt active-cues'
+        children
 
 React.renderComponent do
   ReactVTT target: 'track'

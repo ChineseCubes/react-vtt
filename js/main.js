@@ -1,6 +1,6 @@
 (function(){
-  var ref$, div, ol;
-  ref$ = React.DOM, div = ref$.div, ol = ref$.ol;
+  var ref$, span, ol;
+  ref$ = React.DOM, span = ref$.span, ol = ref$.ol;
   this.ReactVTT == null && (this.ReactVTT = React.createClass({
     displayName: 'ReactVTT',
     className: 'react-vtt',
@@ -11,10 +11,7 @@
         track: null
       };
     },
-    componentWillReceiveProps: function(props){
-      console.log(props);
-    },
-    componentDidMount: function(){
+    componentWillMount: function(){
       var $media, $track, track, tracks, i$, ref$, len$, attr, value, update, this$ = this;
       $media = $('video');
       if ($media.length === 0) {
@@ -54,33 +51,34 @@
       requestAnimationFrame(update);
     },
     render: function(){
-      if (!this.state.track) {
-        return ol();
-      }
+      var children;
+      children = this.state.track.activeCues
+        ? (function(){
+          var i$, to$, results$ = [];
+          for (i$ = 0, to$ = this.state.track.activeCues.length; i$ < to$; ++i$) {
+            results$.push((fn$.call(this, i$)));
+          }
+          return results$;
+          function fn$(i){
+            var cue, delta, ratio;
+            cue = this.state.track.activeCues[i];
+            delta = this.state.media.currentTime - cue.startTime;
+            ratio = 100 * delta / (cue.endTime - cue.startTime);
+            return span({
+              key: i,
+              className: 'cue'
+            }, cue.text, span({
+              className: 'actived',
+              style: {
+                width: ratio + "%"
+              }
+            }, cue.text));
+          }
+        }.call(this))
+        : [];
       return ol({
         className: 'react-vtt active-cues'
-      }, (function(){
-        var i$, to$, results$ = [];
-        for (i$ = 0, to$ = this.state.track.activeCues.length; i$ < to$; ++i$) {
-          results$.push((fn$.call(this, i$)));
-        }
-        return results$;
-        function fn$(i){
-          var cue, delta, ratio;
-          cue = this.state.track.activeCues[i];
-          delta = this.state.media.currentTime - cue.startTime;
-          ratio = delta / (cue.endTime - cue.startTime);
-          return div({
-            key: i,
-            className: 'cue'
-          }, cue.text, div({
-            className: 'actived',
-            style: {
-              width: ratio * 100 + "%"
-            }
-          }, cue.text));
-        }
-      }.call(this)));
+      }, children);
     }
   }));
   React.renderComponent(ReactVTT({
