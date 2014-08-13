@@ -1,8 +1,8 @@
 {
   "name": "react-vtt",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A React component for displaying WebVTT tracks.",
-  "main": "js/main.js",
+  "main": "js/react-vtt.js",
   "scripts": {
     "start": "gulp",
     "prepublish": "gulp build",
@@ -10,7 +10,9 @@
   },
   "keywords": [
     "WebVTT",
-    "React"
+    "React",
+    "Karaoke",
+    "AudioBook"
   ],
   "author": "caasi Huang <caasi@chinesecubes.com>",
   "license": "MIT",

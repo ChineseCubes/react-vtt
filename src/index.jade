@@ -4,7 +4,9 @@ html
     meta(charset="utf-8")
     title React VTT
     link(rel="stylesheet" type="text/css" href="./css/vendor.css")
-    link(rel="stylesheet" type="text/css" href="./css/style.css")
+    link(rel="stylesheet" type="text/css" href="./css/reset.css")
+    link(rel="stylesheet" type="text/css" href="./css/react-vtt.css")
+    link(rel="stylesheet" type="text/css" href="./css/main.css")
   body
     #wrap
       h1 Custom Rendered Subtitles
@@ -21,4 +23,5 @@ html
         track#shared-culture(kind="subtitles" src="./assets/Creative Commons - A shared culture.en.vtt" srclang="en" label="English" default)
       #audio-vtt
     script(src="./js/vendor.js")
+    script(src="./js/react-vtt.js")
     script(src="./js/main.js")

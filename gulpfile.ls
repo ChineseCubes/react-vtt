@@ -41,10 +41,7 @@ gulp.task \js:vendor <[bower]> ->
     .pipe gulp.dest "#{path.build}/js"
 
 gulp.task \js:app ->
-  gulp.src [
-    "#{path.src}/**/*.ls"
-  ]
-    .pipe gulp-concat 'main.ls'
+  gulp.src "#{path.src}/ls/*.ls"
     .pipe livescript!
     .pipe gulp.dest "#{path.build}/js"
     .pipe connect.reload!
@@ -56,10 +53,7 @@ gulp.task \css:vendor <[bower]> ->
     .pipe gulp.dest "#{path.build}/css"
 
 gulp.task \css:app ->
-  gulp.src [
-    "#{path.src}/**/*.styl"
-  ]
-    .pipe gulp-concat 'style.styl'
+  gulp.src "#{path.src}/stylus/*.styl"
     .pipe stylus use: <[nib]>
     .pipe gulp.dest "#{path.build}/css"
     .pipe connect.reload!

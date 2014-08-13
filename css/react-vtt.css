@@ -1,0 +1,27 @@
+.react-vtt {
+  -webkit-font-smoothing: antialiased;
+}
+.react-vtt.cues .cue {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  color: #fff;
+}
+.react-vtt.cues .cue .actived {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: -0.5em;
+  color: #f90;
+}
+.react-vtt.audio-track {
+  text-align: left;
+}
+.react-vtt.audio-track li {
+  line-height: 1.5rem;
+}
+.react-vtt.cues {
+  margin: 1em auto;
+  height: 1em;
+}
