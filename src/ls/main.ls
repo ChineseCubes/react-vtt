@@ -1,51 +1,59 @@
 {span, ol} = React.DOM
+{filter}   = _
+
+slice = Array.prototype.slice
+
+update = (current-time) ->
+  possible-cues = slice.call @cues
+  @active-cues = filter possible-cues, (cue) ->
+    cue.start-time <= current-time < cue.end-time
+
+parse-vtt = !(src, done) ->
+  track =
+    cues: []
+    active-cues: []
+    update: update
+  parser = new WebVTT.Parser window, WebVTT.StringDecoder!
+    ..oncue   = -> track.cues.push it
+    ..onflush = -> done track
+  $.get src, (data) ->
+    parser
+      ..parse data
+      ..flush!
+
+source-from-selector-or-path = (target) ->
+  $track = $ target
+  if $track.length is 0 then target else $track.attr \src
 
 this.ReactVTT ?=
   React.createClass do
     displayName: 'ReactVTT'
     className: 'react-vtt'
+    getDefaultProps: ->
+      current-time: -> 0
     getInitialState: ->
-      attributes: {}
-      media: null
       track: null
     componentWillMount: !->
-      # find track in tracks
-      $track = $ @props.target
-      track = $track.get!0
-      if not track
-        throw new Error "Target <track>: #{@props.target} not found"
-      @state.media = $track.closest \video .get!0
-      @state.media = $track.closest \audio .get!0    if not @state.media
-      throw new Error '<video> or <audio> not found' if not @state.media
-      tracks = @state.media.text-tracks
-      for attr in track.attributes
-        value = if attr.value isnt '' then attr.value else true
-        @state.attributes[attr.name] = value
-      for track in tracks
-        if track.kind     is @state.attributes.kind  and
-           track.label    is @state.attributes.label and
-           track.language is @state.attributes.srclang
-          @state.track = track
-          break
-      if not @state.track
-        throw new Error "Target TextTrack not found"
       # for better animation, requestAnimationFrame
       # is better than timeupdate event
       #$media.on \timeupdate (e) ~> @forceUpdate! if @isMounted!
       update = ~>
         @forceUpdate! if @isMounted!
         requestAnimationFrame update
-      requestAnimationFrame update
+      parse-vtt do
+        source-from-selector-or-path @props.target
+        !~>
+          @state.track = it
+          requestAnimationFrame update
     render: ->
-      children = if @state.track.active-cues
+      children = if @state.track?
+        current-time = @props.current-time!
+        @state.track.update current-time
         for let i from 0 til @state.track.active-cues.length
           cue = @state.track.active-cues[i]
           # FIXME: should deal with cue payload text tags
           text = cue.text.replace /<.*?>/g, ''
-          # the resolution of e.timeStamp in FireFox is 100x than other
-          # browsers and the event fires more frequently, so we should use
-          # video.currentTime instead of e.timeStamp
-          delta = @state.media.current-time - cue.start-time
+          delta = current-time - cue.start-time
           ratio = 100 * delta / (cue.end-time - cue.start-time)
           span do
             key: i
@@ -61,10 +69,19 @@ this.ReactVTT ?=
         className: 'react-vtt active-cues'
         children
 
+video = $ \video .get!0
+audio = $ \audio .get!0
+# the resolution of e.timeStamp in FireFox is 100x than other
+# browsers and the event fires more frequently, so we should use
+# video.currentTime instead of e.timeStamp
 React
   ..renderComponent do
-    ReactVTT target: 'track#chocolate-rain'
+    ReactVTT do
+      target: 'track#chocolate-rain'
+      current-time: -> video.current-time
     $ \#video-vtt .get!0
   ..renderComponent do
-    ReactVTT target: 'track#shared-culture'
+    ReactVTT do
+      target: 'track#shared-culture'
+      current-time: -> audio.current-time
     $ \#audio-vtt .get!0

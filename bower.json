@@ -25,7 +25,9 @@
   ],
   "dependencies": {
     "jquery": "~2.1.0",
-    "react": "~0.11.1"
+    "react": "~0.11.1",
+    "vtt.js": "~0.11.11",
+    "lodash": "~2.4.1"
   },
   "overrides": {}
 }
