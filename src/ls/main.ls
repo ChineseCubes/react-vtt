@@ -1,5 +1,5 @@
 {p, span, ol, li} = React.DOM
-{filter}   = _
+{filter} = _
 
 slice = Array.prototype.slice
 
@@ -38,6 +38,33 @@ ReactVTTMixin =
     parse-vtt do
       source-from-selector-or-path @props.target
       !(@state.track) ~> requestAnimationFrame update
+  render: ->
+    children = if @state.track?
+      current-time = @props.current-time!
+      @state.track.update current-time
+      for let i, cue of @cuesToDisplay!
+        # FIXME: should deal with cue payload text tags
+        text = cue.text.replace /<.*?>/g, ''
+        ratio = switch
+        | current-time <  cue.start-time => 0
+        | current-time >= cue.end-time   => 100
+        | otherwise
+          delta = current-time - cue.start-time
+          100 * delta / (cue.end-time - cue.start-time)
+        li do
+          key: i
+          span do
+            className: 'cue'
+            text
+            span do
+              className: 'actived'
+              style:
+                width: "#ratio%"
+              text
+    else []
+    ol do
+      className: "react-vtt cues #{@props.className}"
+      children
 
 ReactVTT =
   mixin: ReactVTTMixin
@@ -45,62 +72,17 @@ ReactVTT =
     displayName: 'ReactVTT.Karaoke'
     mixins: [ReactVTTMixin]
     getDefaultProps: ->
+      className: 'karaoke'
       current-time: -> 0
-    render: ->
-      children = if @state.track?
-        current-time = @props.current-time!
-        @state.track.update current-time
-        for let i from 0 til @state.track.active-cues.length
-          cue = @state.track.active-cues[i]
-          # FIXME: should deal with cue payload text tags
-          text = cue.text.replace /<.*?>/g, ''
-          delta = current-time - cue.start-time
-          ratio = 100 * delta / (cue.end-time - cue.start-time)
-          li do
-            key: i
-            span do
-              className: 'cue'
-              text
-              span do
-                className: 'actived'
-                style:
-                  width: "#ratio%"
-                text
-      else []
-      ol do
-        className: 'react-vtt karaoke cues'
-        children
+    cuesToDisplay: -> @state.track.active-cues
   AudioTrack: React.createClass do
     displayName: 'ReactVTT.AudioTrack'
     mixins: [ReactVTTMixin]
     getDefaultProps: ->
+      className: 'audio-track'
       current-time: -> 0
-    render: ->
-      children = if @state.track?
-        current-time = @props.current-time!
-        for let i from 0 til @state.track.cues.length
-          cue = @state.track.cues[i]
-          text = cue.text.replace /<.*?>/g, ''
-          ratio = switch
-          | current-time <  cue.start-time => 0
-          | current-time >= cue.end-time   => 100
-          | otherwise
-            delta = current-time - cue.start-time
-            100 * delta / (cue.end-time - cue.start-time)
-          li do
-            key: i
-            span do
-              className: 'cue'
-              text
-              span do
-                className: 'actived'
-                style:
-                  width: "#ratio%"
-                text
-      else []
-      ol do
-        className: 'react-vtt audio-track cues'
-        children
+    cuesToDisplay: -> @state.track.cues
+
 this.ReactVTT ?= ReactVTT
 
 video = $ \video .get!0
