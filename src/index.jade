@@ -10,7 +10,8 @@ html
       h1 Custom Rendered Subtitles
       h2 Video - Chocolate Rain
       video(controls)
-        source(src="./assets/chocolate_rain.webm")
+        source(src="./assets/chocolate_rain.webm" type="video/webm")
+        source(src="./assets/chocolate_rain.mp4" type="video/mp4")
         track#chocolate-rain(kind="subtitles" src="./assets/chocolate_rain.vtt" srclang="en" label="English" default)
       #video-vtt
       hr
