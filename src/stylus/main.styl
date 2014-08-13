@@ -21,18 +21,15 @@ body
     video
       width  480px
       height 360px
-    .active-cues
-      margin 1em auto
-      height 1em
 
 .react-vtt
   margin-top 1em
   font-smoothing antialiased
-  &.active-cues
+  &.cues
     .cue
       position relative
-      white-space nowrap
       display inline-block
+      white-space nowrap
       color white
       .actived
         overflow hidden
@@ -41,3 +38,12 @@ body
         top  0
         bottom -.5em
         color #F90
+  // custom styles
+  //&.karaoke
+  &.audio-track
+    text-align left
+    li
+      line-height 1.5rem
+  &.cues
+    margin 1em auto
+    height 1em

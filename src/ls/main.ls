@@ -1,4 +1,4 @@
-{span, ol} = React.DOM
+{p, span, ol, li} = React.DOM
 {filter}   = _
 
 slice = Array.prototype.slice
@@ -42,8 +42,7 @@ ReactVTTMixin =
 ReactVTT =
   mixin: ReactVTTMixin
   Karaoke: React.createClass do
-    displayName: 'ReactVTT'
-    className: 'react-vtt'
+    displayName: 'ReactVTT.Karaoke'
     mixins: [ReactVTTMixin]
     getDefaultProps: ->
       current-time: -> 0
@@ -57,18 +56,50 @@ ReactVTT =
           text = cue.text.replace /<.*?>/g, ''
           delta = current-time - cue.start-time
           ratio = 100 * delta / (cue.end-time - cue.start-time)
-          span do
+          li do
             key: i
-            className: 'cue'
-            text
             span do
-              className: 'actived'
-              style:
-                width: "#ratio%"
+              className: 'cue'
               text
+              span do
+                className: 'actived'
+                style:
+                  width: "#ratio%"
+                text
       else []
       ol do
-        className: 'react-vtt active-cues'
+        className: 'react-vtt karaoke cues'
+        children
+  AudioTrack: React.createClass do
+    displayName: 'ReactVTT.AudioTrack'
+    mixins: [ReactVTTMixin]
+    getDefaultProps: ->
+      current-time: -> 0
+    render: ->
+      children = if @state.track?
+        current-time = @props.current-time!
+        for let i from 0 til @state.track.cues.length
+          cue = @state.track.cues[i]
+          text = cue.text.replace /<.*?>/g, ''
+          ratio = switch
+          | current-time <  cue.start-time => 0
+          | current-time >= cue.end-time   => 100
+          | otherwise
+            delta = current-time - cue.start-time
+            100 * delta / (cue.end-time - cue.start-time)
+          li do
+            key: i
+            span do
+              className: 'cue'
+              text
+              span do
+                className: 'actived'
+                style:
+                  width: "#ratio%"
+                text
+      else []
+      ol do
+        className: 'react-vtt audio-track cues'
         children
 this.ReactVTT ?= ReactVTT
 
@@ -84,7 +115,7 @@ React
       current-time: -> video.current-time
     $ \#video-vtt .get!0
   ..renderComponent do
-    ReactVTT.Karaoke do
+    ReactVTT.AudioTrack do
       target: 'track#shared-culture'
       current-time: -> audio.current-time
     $ \#audio-vtt .get!0

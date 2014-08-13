@@ -117,25 +117,31 @@ body #wrap video {
   width: 480px;
   height: 360px;
 }
-body #wrap .active-cues {
-  margin: 1em auto;
-  height: 1em;
-}
 .react-vtt {
   margin-top: 1em;
   -webkit-font-smoothing: antialiased;
 }
-.react-vtt.active-cues .cue {
+.react-vtt.cues .cue {
   position: relative;
-  white-space: nowrap;
   display: inline-block;
+  white-space: nowrap;
   color: #fff;
 }
-.react-vtt.active-cues .cue .actived {
+.react-vtt.cues .cue .actived {
   overflow: hidden;
   position: absolute;
   left: 0;
   top: 0;
   bottom: -0.5em;
   color: #f90;
+}
+.react-vtt.audio-track {
+  text-align: left;
+}
+.react-vtt.audio-track li {
+  line-height: 1.5rem;
+}
+.react-vtt.cues {
+  margin: 1em auto;
+  height: 1em;
 }
