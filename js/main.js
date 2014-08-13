@@ -1,5 +1,5 @@
 (function(){
-  var ref$, span, ol, filter, slice, update, parseVtt, sourceFromSelectorOrPath, video, audio, x$;
+  var ref$, span, ol, filter, slice, update, parseVtt, sourceFromSelectorOrPath, ReactVTTMixin, ReactVTT, video, audio, x$;
   ref$ = React.DOM, span = ref$.span, ol = ref$.ol;
   filter = _.filter;
   slice = Array.prototype.slice;
@@ -41,16 +41,7 @@
       return $track.attr('src');
     }
   };
-  this.ReactVTT == null && (this.ReactVTT = React.createClass({
-    displayName: 'ReactVTT',
-    className: 'react-vtt',
-    getDefaultProps: function(){
-      return {
-        currentTime: function(){
-          return 0;
-        }
-      };
-    },
+  ReactVTTMixin = {
     getInitialState: function(){
       return {
         track: null
@@ -64,53 +55,69 @@
         }
         return requestAnimationFrame(update);
       };
-      parseVtt(sourceFromSelectorOrPath(this.props.target), function(it){
-        this$.state.track = it;
+      parseVtt(sourceFromSelectorOrPath(this.props.target), function(track){
+        this$.state.track = track;
         requestAnimationFrame(update);
       });
-    },
-    render: function(){
-      var children, currentTime;
-      children = this.state.track != null
-        ? (currentTime = this.props.currentTime(), this.state.track.update(currentTime), (function(){
-          var i$, to$, results$ = [];
-          for (i$ = 0, to$ = this.state.track.activeCues.length; i$ < to$; ++i$) {
-            results$.push((fn$.call(this, i$)));
-          }
-          return results$;
-          function fn$(i){
-            var cue, text, delta, ratio;
-            cue = this.state.track.activeCues[i];
-            text = cue.text.replace(/<.*?>/g, '');
-            delta = currentTime - cue.startTime;
-            ratio = 100 * delta / (cue.endTime - cue.startTime);
-            return span({
-              key: i,
-              className: 'cue'
-            }, text, span({
-              className: 'actived',
-              style: {
-                width: ratio + "%"
-              }
-            }, text));
-          }
-        }.call(this)))
-        : [];
-      return ol({
-        className: 'react-vtt active-cues'
-      }, children);
     }
-  }));
+  };
+  ReactVTT = {
+    mixin: ReactVTTMixin,
+    Karaoke: React.createClass({
+      displayName: 'ReactVTT',
+      className: 'react-vtt',
+      mixins: [ReactVTTMixin],
+      getDefaultProps: function(){
+        return {
+          currentTime: function(){
+            return 0;
+          }
+        };
+      },
+      render: function(){
+        var children, currentTime;
+        children = this.state.track != null
+          ? (currentTime = this.props.currentTime(), this.state.track.update(currentTime), (function(){
+            var i$, to$, results$ = [];
+            for (i$ = 0, to$ = this.state.track.activeCues.length; i$ < to$; ++i$) {
+              results$.push((fn$.call(this, i$)));
+            }
+            return results$;
+            function fn$(i){
+              var cue, text, delta, ratio;
+              cue = this.state.track.activeCues[i];
+              text = cue.text.replace(/<.*?>/g, '');
+              delta = currentTime - cue.startTime;
+              ratio = 100 * delta / (cue.endTime - cue.startTime);
+              return span({
+                key: i,
+                className: 'cue'
+              }, text, span({
+                className: 'actived',
+                style: {
+                  width: ratio + "%"
+                }
+              }, text));
+            }
+          }.call(this)))
+          : [];
+        return ol({
+          className: 'react-vtt active-cues'
+        }, children);
+      }
+    })
+  };
+  this.ReactVTT == null && (this.ReactVTT = ReactVTT);
   video = $('video').get()[0];
   audio = $('audio').get()[0];
   x$ = React;
-  x$.renderComponent(ReactVTT({
+  x$.renderComponent(ReactVTT.Karaoke({
     target: 'track#chocolate-rain',
     currentTime: function(){
       return video.currentTime;
     }
   }), $('#video-vtt').get()[0]);
-  x$.renderComponent(ReactVTT({
+  x$.renderComponent(ReactVTT.Karaoke({
     target: 'track#shared-culture',
     currentTime: function(){
       return audio.currentTime;

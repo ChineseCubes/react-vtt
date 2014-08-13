@@ -25,26 +25,28 @@ source-from-selector-or-path = (target) ->
   $track = $ target
   if $track.length is 0 then target else $track.attr \src
 
-this.ReactVTT ?=
-  React.createClass do
+ReactVTTMixin =
+  getInitialState: ->
+    track: null
+  componentWillMount: !->
+    # for better animation, requestAnimationFrame
+    # is better than timeupdate event
+    #$media.on \timeupdate (e) ~> @forceUpdate! if @isMounted!
+    update = ~>
+      @forceUpdate! if @isMounted!
+      requestAnimationFrame update
+    parse-vtt do
+      source-from-selector-or-path @props.target
+      !(@state.track) ~> requestAnimationFrame update
+
+ReactVTT =
+  mixin: ReactVTTMixin
+  Karaoke: React.createClass do
     displayName: 'ReactVTT'
     className: 'react-vtt'
+    mixins: [ReactVTTMixin]
     getDefaultProps: ->
       current-time: -> 0
-    getInitialState: ->
-      track: null
-    componentWillMount: !->
-      # for better animation, requestAnimationFrame
-      # is better than timeupdate event
-      #$media.on \timeupdate (e) ~> @forceUpdate! if @isMounted!
-      update = ~>
-        @forceUpdate! if @isMounted!
-        requestAnimationFrame update
-      parse-vtt do
-        source-from-selector-or-path @props.target
-        !~>
-          @state.track = it
-          requestAnimationFrame update
     render: ->
       children = if @state.track?
         current-time = @props.current-time!
@@ -68,6 +70,7 @@ this.ReactVTT ?=
       ol do
         className: 'react-vtt active-cues'
         children
+this.ReactVTT ?= ReactVTT
 
 video = $ \video .get!0
 audio = $ \audio .get!0
@@ -76,12 +79,12 @@ audio = $ \audio .get!0
 # video.currentTime instead of e.timeStamp
 React
   ..renderComponent do
-    ReactVTT do
+    ReactVTT.Karaoke do
       target: 'track#chocolate-rain'
       current-time: -> video.current-time
     $ \#video-vtt .get!0
   ..renderComponent do
-    ReactVTT do
+    ReactVTT.Karaoke do
       target: 'track#shared-culture'
       current-time: -> audio.current-time
     $ \#audio-vtt .get!0
