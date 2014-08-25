@@ -26,6 +26,12 @@ body #wrap video {
   width: 480px;
   height: 360px;
 }
+body #wrap #video-vtt2 {
+  margin: 0 auto;
+  width: 480px;
+  text-align: left;
+  line-height: 1.5em;
+}
 .react-vtt.audio-track {
   text-align: left;
 }

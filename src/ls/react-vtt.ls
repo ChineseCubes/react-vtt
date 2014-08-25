@@ -82,6 +82,13 @@ ReactVTT =
     getDefaultProps: ->
       className: 'audio-track'
     cuesToDisplay: -> @state.track.cues
+  # need a better name
+  IsolatedCue: React.createClass do
+    displayName: 'ReactVTT.IsolatedCue'
+    mixins: [ReactVTTMixin]
+    getDefaultProps: ->
+      className: 'isolated-cue'
+    #cuesToDisplay: -> ...
 
 this.ReactVTT ?= ReactVTT
 

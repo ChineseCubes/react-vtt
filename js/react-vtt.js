@@ -133,6 +133,15 @@
       cuesToDisplay: function(){
         return this.state.track.cues;
       }
+    }),
+    IsolatedCue: React.createClass({
+      displayName: 'ReactVTT.IsolatedCue',
+      mixins: [ReactVTTMixin],
+      getDefaultProps: function(){
+        return {
+          className: 'isolated-cue'
+        };
+      }
     })
   };
   this.ReactVTT == null && (this.ReactVTT = ReactVTT);
