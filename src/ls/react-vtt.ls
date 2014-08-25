@@ -26,6 +26,8 @@ source-from-selector-or-path = (target) ->
   if $track.length is 0 then target else $track.attr \src
 
 ReactVTTMixin =
+  getDefaultProps: ->
+    current-time: -> 0
   getInitialState: ->
     track: null
   componentWillMount: !->
@@ -73,14 +75,12 @@ ReactVTT =
     mixins: [ReactVTTMixin]
     getDefaultProps: ->
       className: 'karaoke'
-      current-time: -> 0
     cuesToDisplay: -> @state.track.active-cues
   AudioTrack: React.createClass do
     displayName: 'ReactVTT.AudioTrack'
     mixins: [ReactVTTMixin]
     getDefaultProps: ->
       className: 'audio-track'
-      current-time: -> 0
     cuesToDisplay: -> @state.track.cues
 
 this.ReactVTT ?= ReactVTT

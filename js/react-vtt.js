@@ -42,6 +42,13 @@
     }
   };
   ReactVTTMixin = {
+    getDefaultProps: function(){
+      return {
+        currentTime: function(){
+          return 0;
+        }
+      };
+    },
     getInitialState: function(){
       return {
         track: null
@@ -108,10 +115,7 @@
       mixins: [ReactVTTMixin],
       getDefaultProps: function(){
         return {
-          className: 'karaoke',
-          currentTime: function(){
-            return 0;
-          }
+          className: 'karaoke'
         };
       },
       cuesToDisplay: function(){
@@ -123,10 +127,7 @@
       mixins: [ReactVTTMixin],
       getDefaultProps: function(){
         return {
-          className: 'audio-track',
-          currentTime: function(){
-            return 0;
-          }
+          className: 'audio-track'
         };
       },
       cuesToDisplay: function(){

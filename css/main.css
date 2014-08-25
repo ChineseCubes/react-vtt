@@ -32,7 +32,3 @@ body #wrap video {
 .react-vtt.audio-track li {
   line-height: 1.5rem;
 }
-.react-vtt.cues {
-  margin: 1em auto;
-  height: 1em;
-}

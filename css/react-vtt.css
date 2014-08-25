@@ -23,5 +23,5 @@
 }
 .react-vtt.cues {
   margin: 1em auto;
-  height: 1em;
+  min-height: 1em;
 }
