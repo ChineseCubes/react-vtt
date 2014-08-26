@@ -1,5 +1,4 @@
 video  = $ \video .get!0
-video2 = $ \video .get!1
 audio  = $ \audio .get!0
 # the resolution of e.timeStamp in FireFox is 100x than other
 # browsers and the event fires more frequently, so we should use
@@ -15,11 +14,15 @@ React
       target: 'track#shared-culture'
       current-time: -> audio.current-time
     $ \#audio-vtt .get!0
-# $ '#video-vtt2 > .cue' .each (i) ->
-# React.renderComponent do
-#   ReactVTT.IsolatedCue do
-#     target: './assets/chocolate_rain.vtt'
-#     id: i + 1
-#     current-time: -> video2.current-time
-#     this
+$ '#video-vtt2 .cue' .each (i) ->
+  #node = if @childNodes?lengtn then @childNodes.0 else this
+  try
+    React.renderComponent do
+      ReactVTT.IsolatedCue do
+        target: './assets/chocolate_rain.vtt'
+        index: i
+        current-time: -> video.current-time
+      this
+  catch e
+    console.log e, this
 

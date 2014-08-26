@@ -1,7 +1,6 @@
 (function(){
-  var video, video2, audio, x$;
+  var video, audio, x$;
   video = $('video').get()[0];
-  video2 = $('video').get()[1];
   audio = $('audio').get()[0];
   x$ = React;
   x$.renderComponent(ReactVTT.Karaoke({
@@ -16,4 +15,19 @@
       return audio.currentTime;
     }
   }), $('#audio-vtt').get()[0]);
+  $('#video-vtt2 .cue').each(function(i){
+    var e;
+    try {
+      return React.renderComponent(ReactVTT.IsolatedCue({
+        target: './assets/chocolate_rain.vtt',
+        index: i,
+        currentTime: function(){
+          return video.currentTime;
+        }
+      }), this);
+    } catch (e$) {
+      e = e$;
+      return console.log(e, this);
+    }
+  });
 }).call(this);

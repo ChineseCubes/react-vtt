@@ -22,8 +22,11 @@ parse-vtt = !(src, done) ->
       ..flush!
 
 source-from-selector-or-path = (target) ->
-  $track = $ target
-  if $track.length is 0 then target else $track.attr \src
+  try
+    $track = $ target
+  catch e
+    return target
+  $track.attr \src
 
 ReactVTTMixin =
   getDefaultProps: ->
@@ -88,7 +91,8 @@ ReactVTT =
     mixins: [ReactVTTMixin]
     getDefaultProps: ->
       className: 'isolated-cue'
-    #cuesToDisplay: -> ...
+      index: 0
+    cuesToDisplay: -> [@state.track.cues[@props.index]]
 
 this.ReactVTT ?= ReactVTT
 

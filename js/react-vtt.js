@@ -33,13 +33,14 @@
     });
   };
   sourceFromSelectorOrPath = function(target){
-    var $track;
-    $track = $(target);
-    if ($track.length === 0) {
+    var $track, e;
+    try {
+      $track = $(target);
+    } catch (e$) {
+      e = e$;
       return target;
-    } else {
-      return $track.attr('src');
     }
+    return $track.attr('src');
   };
   ReactVTTMixin = {
     getDefaultProps: function(){
@@ -139,8 +140,12 @@
       mixins: [ReactVTTMixin],
       getDefaultProps: function(){
         return {
-          className: 'isolated-cue'
+          className: 'isolated-cue',
+          index: 0
         };
+      },
+      cuesToDisplay: function(){
+        return [this.state.track.cues[this.props.index]];
       }
     })
   };

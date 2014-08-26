@@ -15,13 +15,17 @@
   bottom: -0.5em;
   color: #f90;
 }
+.react-vtt.isolated-cue {
+  display: inline-block;
+}
+.react-vtt.karaoke,
+.react-vtt.audio-track {
+  margin: 1em auto;
+  min-height: 1em;
+}
 .react-vtt.audio-track {
   text-align: left;
 }
 .react-vtt.audio-track li {
   line-height: 1.5rem;
-}
-.react-vtt.cues {
-  margin: 1em auto;
-  min-height: 1em;
 }

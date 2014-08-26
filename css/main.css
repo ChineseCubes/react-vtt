@@ -6,6 +6,7 @@ body h1,
 body h2,
 body hr {
   margin-bottom: 1rem;
+  clear: both;
 }
 body h1 {
   font-size: 200%;
@@ -18,7 +19,7 @@ body hr {
   border-bottom: 1px solid #333;
 }
 body #wrap {
-  width: 900px;
+  width: 1440px;
   margin: 0 auto;
   text-align: center;
 }
@@ -26,11 +27,19 @@ body #wrap video {
   width: 480px;
   height: 360px;
 }
+body #wrap #audio-vtt {
+  margin: 0 auto;
+  width: 900px;
+}
 body #wrap #video-vtt2 {
   margin: 0 auto;
-  width: 480px;
   text-align: left;
   line-height: 1.5em;
+}
+body #wrap #video-vtt2 div {
+  width: 480px;
+  float: left;
+  margin-bottom: 1em;
 }
 .react-vtt.audio-track {
   text-align: left;
