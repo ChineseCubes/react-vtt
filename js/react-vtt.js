@@ -141,11 +141,27 @@
       getDefaultProps: function(){
         return {
           className: 'isolated-cue',
-          index: 0
+          index: 0,
+          match: null
         };
       },
       cuesToDisplay: function(){
-        return [this.state.track.cues[this.props.index]];
+        var cue, i$, to$, i, text;
+        switch (false) {
+        case !!this.props.match:
+          return [this.state.track.cues[this.props.index]];
+        default:
+          cue = null;
+          for (i$ = this.props.index, to$ = this.state.track.cues.length; i$ < to$; ++i$) {
+            i = i$;
+            cue = this.state.track.cues[i];
+            text = cue.text.replace(/<.*?>/g, '');
+            if (text === this.props.match) {
+              break;
+            }
+          }
+          return [cue];
+        }
       }
     })
   };

@@ -21,6 +21,7 @@ $ '#video-vtt2 .cue' .each (i) ->
       ReactVTT.IsolatedCue do
         target: './assets/chocolate_rain.vtt'
         index: i
+        match: $(this)text!
         current-time: -> video.current-time
       this
   catch e

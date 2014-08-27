@@ -92,7 +92,16 @@ ReactVTT =
     getDefaultProps: ->
       className: 'isolated-cue'
       index: 0
-    cuesToDisplay: -> [@state.track.cues[@props.index]]
+      match: null
+    cuesToDisplay: ->
+      | not @props.match => [@state.track.cues[@props.index]]
+      | otherwise
+        cue = null
+        for i from @props.index til @state.track.cues.length
+          cue := @state.track.cues[i]
+          text = cue.text.replace /<.*?>/g, ''
+          break if text is @props.match
+        [cue]
 
 this.ReactVTT ?= ReactVTT
 

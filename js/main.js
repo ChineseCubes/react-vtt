@@ -21,6 +21,7 @@
       return React.renderComponent(ReactVTT.IsolatedCue({
         target: './assets/chocolate_rain.vtt',
         index: i,
+        match: $(this).text(),
         currentTime: function(){
           return video.currentTime;
         }

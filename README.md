@@ -33,6 +33,7 @@ Like the following example, you can use this component with or without `<track>`
     ReactVTT.IsolatedCue({
       traget: './assets/chocolate_rain.vtt',
       index: 20, // begin with 0
+      match: 'Chocolate Rain' // search from the index to the end if not null
       currentTime: function(){ return audio.currentTime; }
     }),
     document.getElementById('#video-vtt')

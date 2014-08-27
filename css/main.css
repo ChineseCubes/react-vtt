@@ -41,6 +41,15 @@ body #wrap #video-vtt2 div {
   float: left;
   margin-bottom: 1em;
 }
+.react-vtt.karaoke {
+  font-size: 150%;
+  font-weight: bold;
+  margin: 1em 0;
+  min-height: 1.5em;
+}
+.react-vtt.karaoke li {
+  line-height: 1.5rem;
+}
 .react-vtt.audio-track {
   text-align: left;
 }
