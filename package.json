@@ -9,12 +9,6 @@
     "prepublish": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "WebVTT",
-    "React",
-    "Karaoke",
-    "AudioBook"
-  ],
   "author": "caasi Huang <caasi@chinesecubes.com>",
   "license": "MIT",
   "devDependencies": {
