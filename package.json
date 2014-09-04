@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "description": "A React component for displaying WebVTT tracks.",
   "main": "js/react-vtt.js",
+  "keywords": [ "react-component", "webvtt", "subtitle", "karaoke" ]
   "scripts": {
     "start": "gulp",
     "prepublish": "gulp build",
