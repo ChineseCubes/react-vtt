@@ -58,10 +58,13 @@
     componentWillMount: function(){
       var update, this$ = this;
       update = function(){
-        if (this$.isMounted()) {
+        var currentTime;
+        currentTime = this$.props.currentTime();
+        if (this$.isMounted() && currentTime !== this$.state.currentTime) {
+          this$.state.currentTime = currentTime;
           this$.forceUpdate();
         }
-        return requestAnimationFrame(update);
+        return setTimeout(update, 50);
       };
       parseVtt(sourceFromSelectorOrPath(this.props.target), function(track){
         this$.state.track = track;
@@ -69,9 +72,9 @@
       });
     },
     render: function(){
-      var children, currentTime;
+      var children, currentTime, ref$;
       children = this.state.track != null
-        ? (currentTime = this.props.currentTime(), this.state.track.update(currentTime), (function(){
+        ? (currentTime = (ref$ = this.state).currentTime || (ref$.currentTime = this.props.currentTime()), this.state.track.update(currentTime), (function(){
           var i$, results$ = [];
           for (i$ in this.cuesToDisplay()) {
             results$.push((fn$.call(this, i$, this.cuesToDisplay()[i$])));

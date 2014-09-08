@@ -38,14 +38,17 @@ ReactVTTMixin =
     # is better than timeupdate event
     #$media.on \timeupdate (e) ~> @forceUpdate! if @isMounted!
     update = ~>
-      @forceUpdate! if @isMounted!
-      requestAnimationFrame update
+      current-time = @props.current-time!
+      if @isMounted! and current-time isnt @state.current-time
+        @state.current-time = current-time
+        @forceUpdate!
+      setTimeout update, 50ms
     parse-vtt do
       source-from-selector-or-path @props.target
       !(@state.track) ~> requestAnimationFrame update
   render: ->
     children = if @state.track?
-      current-time = @props.current-time!
+      current-time = @state.current-time ||= @props.current-time!
       @state.track.update current-time
       for let i, cue of @cuesToDisplay!
         # FIXME: should deal with cue payload text tags
