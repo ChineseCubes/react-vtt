@@ -1,7 +1,7 @@
 {p, span, ol, li} = React.DOM
 {filter} = _
 
-slice = Array.prototype.slice
+slice = Array::slice
 
 update = (current-time) ->
   possible-cues = slice.call @cues
@@ -34,8 +34,7 @@ ReactVTTMixin =
   getInitialState: ->
     track: null
   componentWillMount: !->
-    # for better animation, requestAnimationFrame
-    # is better than timeupdate event
+    # for better animation, setTimeout is better than timeupdate event
     #$media.on \timeupdate (e) ~> @forceUpdate! if @isMounted!
     update = ~>
       current-time = @props.current-time!
