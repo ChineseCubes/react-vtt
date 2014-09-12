@@ -74,6 +74,7 @@ ReactVTTMixin =
       children
 
 ReactVTT =
+  parse: parse-vtt
   mixin: ReactVTTMixin
   Karaoke: React.createClass do
     displayName: 'ReactVTT.Karaoke'

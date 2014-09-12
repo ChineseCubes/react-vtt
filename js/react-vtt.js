@@ -113,6 +113,7 @@
     }
   };
   ReactVTT = {
+    parse: parseVtt,
     mixin: ReactVTTMixin,
     Karaoke: React.createClass({
       displayName: 'ReactVTT.Karaoke',
