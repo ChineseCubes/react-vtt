@@ -1,5 +1,8 @@
 (function(){
-  var ref$, p, span, ol, li, filter, slice, update, parseVtt, sourceFromSelectorOrPath, ReactVTTMixin, ReactVTT;
+  var React, _, WebVTT, ref$, p, span, ol, li, filter, slice, update, parseVtt, sourceFromSelectorOrPath, ReactVTTMixin, ReactVTT;
+  React == null && (React = require('react'));
+  _ == null && (_ = require('lodash'));
+  WebVTT == null && (WebVTT = require('vtt.js'));
   ref$ = React.DOM, p = ref$.p, span = ref$.span, ol = ref$.ol, li = ref$.li;
   filter = _.filter;
   slice = Array.prototype.slice;
@@ -170,4 +173,7 @@
     })
   };
   this.ReactVTT == null && (this.ReactVTT = ReactVTT);
+  if (typeof module != 'undefined' && module !== null) {
+    module.exports = ReactVTT;
+  }
 }).call(this);

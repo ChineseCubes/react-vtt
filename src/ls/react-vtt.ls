@@ -1,6 +1,9 @@
+React  ?= require 'react'
+_      ?= require 'lodash'
+WebVTT ?= require 'vtt.js'
+
 {p, span, ol, li} = React.DOM
 {filter} = _
-
 slice = Array::slice
 
 update = (current-time) ->
@@ -107,4 +110,5 @@ ReactVTT =
         [cue]
 
 this.ReactVTT ?= ReactVTT
+module?exports = ReactVTT
 
