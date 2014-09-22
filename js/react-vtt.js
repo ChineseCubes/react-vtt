@@ -14,26 +14,35 @@
     });
   };
   parseVtt = function(src, done){
-    var track, x$, parser;
+    var track, parser, x$;
     track = {
       cues: [],
       activeCues: [],
       update: update
     };
-    x$ = parser = new WebVTT.Parser(window, WebVTT.StringDecoder());
-    x$.oncue = function(it){
-      return track.cues.push(it);
-    };
-    x$.onflush = function(){
-      return done(track);
-    };
-    $.get(src, function(data){
-      var x$;
+    parser = (function(){
+      try {
+        return new WebVTT.Parser(window, WebVTT.StringDecoder());
+      } catch (e$) {}
+    }());
+    if (parser) {
       x$ = parser;
-      x$.parse(data);
-      x$.flush();
-      return x$;
-    });
+      x$.oncue = function(it){
+        return track.cues.push(it);
+      };
+      x$.onflush = function(){
+        return done(track);
+      };
+      $.get(src, function(data){
+        var x$;
+        x$ = parser;
+        x$.parse(data);
+        x$.flush();
+        return x$;
+      });
+    } else {
+      done(null);
+    }
   };
   sourceFromSelectorOrPath = function(target){
     var $track, e;
@@ -71,7 +80,9 @@
       };
       parseVtt(sourceFromSelectorOrPath(this.props.target), function(track){
         this$.state.track = track;
-        requestAnimationFrame(update);
+        try {
+          requestAnimationFrame(update);
+        } catch (e$) {}
       });
     },
     render: function(){

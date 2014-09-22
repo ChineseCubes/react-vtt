@@ -16,13 +16,17 @@ parse-vtt = !(src, done) ->
     cues: []
     active-cues: []
     update: update
-  parser = new WebVTT.Parser window, WebVTT.StringDecoder!
-    ..oncue   = -> track.cues.push it
-    ..onflush = -> done track
-  $.get src, (data) ->
+  parser = try new WebVTT.Parser window, WebVTT.StringDecoder!
+  if parser
     parser
-      ..parse data
-      ..flush!
+      ..oncue   = -> track.cues.push it
+      ..onflush = -> done track
+    $.get src, (data) ->
+      parser
+        ..parse data
+        ..flush!
+  else
+    done null
 
 source-from-selector-or-path = (target) ->
   try
@@ -47,7 +51,7 @@ ReactVTTMixin =
       setTimeout update, 50ms
     parse-vtt do
       source-from-selector-or-path @props.target
-      !(@state.track) ~> requestAnimationFrame update
+      !(@state.track) ~> try requestAnimationFrame update
   render: ->
     children = if @state.track?
       current-time = @state.current-time ||= @props.current-time!
