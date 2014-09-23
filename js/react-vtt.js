@@ -33,6 +33,16 @@
       x$.onflush = function(){
         return done(track);
       };
+      if (/.json$/.exec(src)) {
+        return $.getJSON(src, function(arg$){
+          var data, x$;
+          data = arg$.webvtt;
+          x$ = parser;
+          x$.parse(data);
+          x$.flush();
+          return x$;
+        });
+      }
       $.get(src, function(data){
         var x$;
         x$ = parser;

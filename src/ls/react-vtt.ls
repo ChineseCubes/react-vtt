@@ -21,6 +21,11 @@ parse-vtt = !(src, done) ->
     parser
       ..oncue   = -> track.cues.push it
       ..onflush = -> done track
+    if src is /.json$/
+      return $.getJSON src, ({webvtt: data}) ->
+        parser
+          ..parse data
+          ..flush!
     $.get src, (data) ->
       parser
         ..parse data
