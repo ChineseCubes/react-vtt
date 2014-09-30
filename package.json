@@ -3,7 +3,12 @@
   "version": "0.1.7",
   "description": "A React component for displaying WebVTT tracks.",
   "main": "js/react-vtt.js",
-  "keywords": [ "react-component", "webvtt", "subtitle", "karaoke" ],
+  "keywords": [
+    "react-component",
+    "webvtt",
+    "subtitle",
+    "karaoke"
+  ],
   "scripts": {
     "start": "gulp",
     "prepublish": "gulp build",
@@ -23,8 +28,14 @@
     "gulp-livescript": "^0.2.1",
     "gulp-stylus": "^0.1.0",
     "gulp-util": "^2.2.20",
+    "gulp-webpack": "^0.4.1",
     "main-bower-files": "^1.0.2",
     "nib": "^1.0.2",
     "streamqueue": "^0.1.1"
+  },
+  "dependencies": {
+    "jquery": "^2.1.1",
+    "lodash": "^2.4.1",
+    "react": "^0.11.2"
   }
 }

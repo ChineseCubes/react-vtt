@@ -1,5 +1,6 @@
 require! <[gulp gulp-concat gulp-filter gulp-flatten]>
 require! <[bower main-bower-files streamqueue]>
+webpack    = require \gulp-webpack
 connect    = require \gulp-connect
 gutil      = require \gulp-util
 livescript = require \gulp-livescript
@@ -9,6 +10,7 @@ jade       = require \gulp-jade
 path =
   src:    './src'
   vendor: './vendor'
+  dest:   './dest'
   build:  '.'
 
 gulp.task \bower ->
@@ -41,8 +43,18 @@ gulp.task \js:vendor <[bower]> ->
     .pipe gulp.dest "#{path.build}/js"
 
 gulp.task \js:app ->
-  gulp.src "#{path.src}/ls/*.ls"
+  gulp.src "#{path.src}/ls/**/*.ls"
     .pipe livescript!
+    .pipe gulp.dest "#{path.dest}/"
+
+gulp.task \webpack <[js:app]> ->
+  gulp.src "#{path.dest}/main.js"
+    .pipe webpack do
+      context: "#{path.dest}/"
+      output:
+        filename: 'build.js'
+      externals:
+        'vtt.js': 'WebVTT'
     .pipe gulp.dest "#{path.build}/js"
     .pipe connect.reload!
 
@@ -66,12 +78,12 @@ gulp.task \html ->
     .pipe gulp.dest path.build
     .pipe connect.reload!
 
-gulp.task \build <[vendor js:app css:app html]>
+gulp.task \build <[vendor webpack css:app html]>
 
 gulp.task \watch <[build]> ->
   gulp
     ..watch 'bower.json'             <[vendor]>
-    ..watch "#{path.src}/**/*.ls"    <[js:app]>
+    ..watch "#{path.src}/**/*.ls"    <[webpack]>
     ..watch "#{path.src}/**/*.styl"  <[css:app]>
     ..watch "#{path.src}/*.jade"     <[html]>
 

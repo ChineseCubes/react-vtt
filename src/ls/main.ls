@@ -1,3 +1,7 @@
+React    = require 'react'
+$        = require 'jquery'
+ReactVTT = require './react-vtt'
+
 video  = $ \video .get!0
 audio  = $ \audio .get!0
 # the resolution of e.timeStamp in FireFox is 100x than other

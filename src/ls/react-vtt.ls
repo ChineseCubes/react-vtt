@@ -1,4 +1,5 @@
 React  ?= require 'react'
+$      ?= require 'jquery'
 _      ?= require 'lodash'
 WebVTT ?= require 'vtt.js'
 
