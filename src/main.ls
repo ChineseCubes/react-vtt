@@ -1,6 +1,6 @@
 React    = require 'react'
 $        = require 'jquery'
-ReactVTT = require './react-vtt'
+ReactVTT = require './ReactVTT'
 
 video  = $ \video .get!0
 audio  = $ \audio .get!0

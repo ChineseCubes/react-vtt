@@ -1,4 +1,4 @@
-require! <[gulp gulp-concat gulp-filter gulp-flatten]>
+require! <[gulp gulp-concat gulp-filter gulp-flatten nib]>
 require! <[bower main-bower-files streamqueue]>
 webpack    = require \gulp-webpack
 connect    = require \gulp-connect
@@ -43,7 +43,7 @@ gulp.task \js:vendor <[bower]> ->
     .pipe gulp.dest "#{path.build}/js"
 
 gulp.task \js:app ->
-  gulp.src "#{path.src}/ls/**/*.ls"
+  gulp.src "#{path.src}/**/*.ls"
     .pipe livescript!
     .pipe gulp.dest "#{path.dest}/"
 
@@ -65,10 +65,16 @@ gulp.task \css:vendor <[bower]> ->
     .pipe gulp.dest "#{path.build}/css"
 
 gulp.task \css:app ->
-  gulp.src "#{path.src}/stylus/*.styl"
-    .pipe stylus use: <[nib]>
+  gulp.src "#{path.src}/**/main.styl"
+    .pipe stylus use: [nib!]
     .pipe gulp.dest "#{path.build}/css"
     .pipe connect.reload!
+  gulp.src [
+    "#{path.src}/**/*.styl"
+    "!#{path.src}/**/main.styl"
+  ]
+    .pipe stylus use: [nib!]
+    .pipe gulp.dest "#{path.dest}/"
 
 gulp.task \vendor <[fonts:vendor images:vendor js:vendor css:vendor]>
 
