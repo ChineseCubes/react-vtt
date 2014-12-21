@@ -12,5 +12,7 @@
   top: 0;
   bottom: -0.5rem;
   overflow: hidden;
+}
+.cue > .children > .overlay * {
   color: #f90 !important;
 }

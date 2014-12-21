@@ -122,6 +122,8 @@ a img {
   top: 0;
   bottom: -0.5rem;
   overflow: hidden;
+}
+.cue > .children > .overlay * {
   color: #f90 !important;
 }
 body {
@@ -183,5 +185,6 @@ body #wrap #video-vtt2 div {
   line-height: 1.5rem;
 }
 .big {
+  color: #f00;
   font-size: 2rem;
 }
