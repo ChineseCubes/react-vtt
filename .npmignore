@@ -1,0 +1,11 @@
+assets
+bower.json
+bower_components
+fonts
+gulpfile.ls
+images
+index.html
+js
+node_modules
+src
+.gitignore

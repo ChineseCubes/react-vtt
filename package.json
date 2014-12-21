@@ -1,6 +1,6 @@
 {
   "name": "react-vtt",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "description": "A React component for displaying WebVTT tracks.",
   "main": "dest/ReactVTT.js",
   "keywords": [
