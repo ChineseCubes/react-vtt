@@ -1,11 +1,14 @@
 (function(){
-  var React, $, ReactVTT, Karaoke, AudioTrack, IsolatedCue, video, audio, x$;
+  var React, $, ReactVTT, Karaoke, AudioTrack, IsolatedCue, Cue, ref$, div, span, parse, video, audio, x$;
   React = require('react');
   $ = require('jquery');
   ReactVTT = require('./ReactVTT');
   Karaoke = React.createFactory(ReactVTT.Karaoke);
   AudioTrack = React.createFactory(ReactVTT.AudioTrack);
   IsolatedCue = React.createFactory(ReactVTT.IsolatedCue);
+  Cue = React.createFactory(require('./Cue'));
+  ref$ = React.DOM, div = ref$.div, span = ref$.span;
+  parse = ReactVTT.parse;
   video = $('video').get()[0];
   audio = $('audio').get()[0];
   x$ = React;
@@ -21,6 +24,15 @@
       return audio.currentTime;
     }
   }), $('#audio-vtt').get()[0]);
+  x$.render(Cue({
+    startTime: 1.0,
+    endTime: 2.0,
+    time: 1.55
+  }, div({
+    className: 'complex'
+  }, span({}, 'This '), span({
+    className: 'big'
+  }, 'is a BIG'), span({}, ' cue.'))), $('#video-vtt3').get()[0]);
   $('#video-vtt2 .cue').each(function(i){
     var e;
     try {

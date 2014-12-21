@@ -17,7 +17,7 @@
   "author": "caasi Huang <caasi@chinesecubes.com>",
   "license": "MIT",
   "devDependencies": {
-    "LiveScript": "^1.3.0",
+    "LiveScript": "^1.3.1",
     "bower": "^1.3.8",
     "gulp": "^3.7.0",
     "gulp-concat": "^2.1.7",
@@ -36,6 +36,6 @@
   "dependencies": {
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
-    "react": "^0.12.0-rc1"
+    "react": "^0.12.2"
   }
 }

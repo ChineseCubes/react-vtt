@@ -4,6 +4,10 @@ ReactVTT = require './ReactVTT'
 Karaoke     = React.createFactory ReactVTT.Karaoke
 AudioTrack  = React.createFactory ReactVTT.AudioTrack
 IsolatedCue = React.createFactory ReactVTT.IsolatedCue
+Cue         = React.createFactory require './Cue'
+
+{ div, span } = React.DOM
+{ parse } = ReactVTT
 
 video  = $ \video .get!0
 audio  = $ \audio .get!0
@@ -21,6 +25,19 @@ React
       target: 'track#shared-culture'
       current-time: -> audio.current-time
     $ \#audio-vtt .get!0
+  ..render do
+    Cue do
+      startTime: 1.0
+      endTime:   2.0
+      time:      1.55
+      div do
+        className: 'complex'
+        span {} 'This '
+        span do
+          className: 'big'
+          'is a BIG'
+        span {} ' cue.'
+    $ \#video-vtt3 .get!0
 $ '#video-vtt2 .cue' .each (i) ->
   #node = if @childNodes?lengtn then @childNodes.0 else this
   try

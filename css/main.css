@@ -108,6 +108,22 @@ a img {
 .react-vtt.isolated-cue {
   display: inline-block;
 }
+.cue {
+  -webkit-font-smoothing: antialiased;
+}
+.cue > .children {
+  display: inline-block;
+  position: relative;
+}
+.cue > .children > .overlay {
+  white-space: nowrap;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: -0.5rem;
+  overflow: hidden;
+  color: #f90 !important;
+}
 body {
   color: #fff;
   background: #16161d;
@@ -165,4 +181,7 @@ body #wrap #video-vtt2 div {
 }
 .react-vtt.audio-track li {
   line-height: 1.5rem;
+}
+.big {
+  font-size: 2rem;
 }
