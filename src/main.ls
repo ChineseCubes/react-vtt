@@ -6,7 +6,7 @@ AudioTrack  = React.createFactory ReactVTT.AudioTrack
 IsolatedCue = React.createFactory ReactVTT.IsolatedCue
 Cue         = React.createFactory require './Cue'
 
-{ div, span } = React.DOM
+{ div, span, a } = React.DOM
 { parse } = ReactVTT
 
 video  = $ \video .get!0
@@ -29,13 +29,14 @@ React
     Cue do
       startTime: 1.0
       endTime:   2.0
-      time:      1.55
+      time:      1.45
       div do
         className: 'complex'
-        span {} 'This '
-        span do
+        span {} 'This is a '
+        a do
           className: 'big'
-          'is a BIG'
+          href: '#'
+          'BIG'
         span {} ' cue.'
     $ \#video-vtt3 .get!0
 $ '#video-vtt2 .cue' .each (i) ->
