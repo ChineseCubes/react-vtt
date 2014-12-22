@@ -3,10 +3,24 @@ ReactVTT = require './ReactVTT'
 Cue      = React.createFactory require './Cue'
 
 { div, span } = React.DOM
-{ parse, from-selector-or-path } = ReactVTT
+{ parse, separate, from-selector-or-path } = ReactVTT
 
 video = document.getElementsByTagName \video .0
 audio = document.getElementsByTagName \audio .0
+
+VideoTrack = React.createClass do
+  displayName: 'VideoTrack'
+  getDefaultProps: ->
+    data: []
+    currentTime: 0
+  render: ->
+    div do
+      className: 'video-track'
+      for i, data of @props.data
+        Cue do
+          data <<< { key: i, currentTime: @props.currentTime }
+          data.text
+VideoTrack = React.createFactory VideoTrack
 
 AudioTrack = React.createClass do
   displayName: 'AudioTrack'
@@ -41,11 +55,13 @@ do
   requestAnimationFrame update
 
   # Karaoke
-  karaoke = React.render Cue!, document.getElementById 'video-vtt'
+  karaoke = React.render VideoTrack!, document.getElementById 'video-vtt'
   update-karaoke = (time, cues) ->
     cue = cues.activeCues.0 or { startTime: 0, endTime: 0 }
-    karaoke.setProps do
-      cue <<< { currentTime: time, children: span {} cue.text }
+    if cues.activeCues.0
+      karaoke.setProps do
+        data: separate cues.activeCues.0
+        currentTime: time
 
   # Whole Track
   audio-track = React.render do

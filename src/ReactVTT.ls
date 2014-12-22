@@ -31,6 +31,27 @@ parse = !(src, done) ->
   else
     done null
 
+separate = (cue) ->
+  re = /(.*?)<(\d\d):(\d\d):(\d\d).(\d\d\d)>/g
+  lastTime = cue.startTime
+  lastIndex = 0
+  parts = while r = re.exec cue.text
+    { 1: text, 2: hr, 3: min, 4: sec, 5: ms } = r
+    time = (+hr) * 3600 + (+min) * 60 + (+sec) + (+ms) / 1000
+    part =
+      text: text
+      startTime: lastTime
+      endTime: time
+    lastTime = time
+    lastIndex = re.lastIndex
+    part
+  if lastIndex isnt cue.text.length
+    parts.push do
+      text: cue.text.slice lastIndex
+      startTime: lastTime
+      endTime: cue.endTime
+  parts
+
 from-selector-or-path = (target) ->
   try
     $track = $ target
@@ -40,6 +61,7 @@ from-selector-or-path = (target) ->
 
 ReactVTT =
   parse: parse
+  separate: separate
   from-selector-or-path: from-selector-or-path
   Cue: require './Cue'
 

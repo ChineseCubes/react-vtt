@@ -4,10 +4,10 @@
 .cue > .children {
   display: inline-block;
   position: relative;
+  white-space: pre;
 }
 .cue > .children > .overlay {
   pointer-events: none;
-  white-space: nowrap;
   position: absolute;
   left: 0;
   top: 0;

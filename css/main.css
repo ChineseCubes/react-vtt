@@ -95,10 +95,10 @@ a img {
 .cue > .children {
   display: inline-block;
   position: relative;
+  white-space: pre;
 }
 .cue > .children > .overlay {
   pointer-events: none;
-  white-space: nowrap;
   position: absolute;
   left: 0;
   top: 0;
@@ -144,19 +144,12 @@ body #wrap #video-vtt {
   margin: 1em 0;
   min-height: 1.5em;
 }
+body #wrap #video-vtt .cue {
+  display: inline-block;
+}
 body #wrap #audio-vtt {
   margin: 0 auto;
-  width: 900px;
+  width: 960px;
   text-align: left;
   line-height: 1.5rem;
-}
-body #wrap #video-vtt2 {
-  margin: 0 auto;
-  text-align: left;
-  line-height: 1.5em;
-}
-body #wrap #video-vtt2 div {
-  width: 480px;
-  float: left;
-  margin-bottom: 1em;
 }

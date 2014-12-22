@@ -1,5 +1,5 @@
 (function(){
-  var $, _, WebVTT, filter, update, parse, fromSelectorOrPath, ReactVTT;
+  var $, _, WebVTT, filter, update, parse, separate, fromSelectorOrPath, ReactVTT;
   $ = require('jquery');
   _ = require('lodash');
   WebVTT = require('vtt.js');
@@ -52,6 +52,34 @@
       done(null);
     }
   };
+  separate = function(cue){
+    var re, lastTime, lastIndex, parts, res$, r, text, hr, min, sec, ms, time, part;
+    re = /(.*?)<(\d\d):(\d\d):(\d\d).(\d\d\d)>/g;
+    lastTime = cue.startTime;
+    lastIndex = 0;
+    res$ = [];
+    while (r = re.exec(cue.text)) {
+      text = r[1], hr = r[2], min = r[3], sec = r[4], ms = r[5];
+      time = (+hr) * 3600 + (+min) * 60 + (+sec) + (+ms) / 1000;
+      part = {
+        text: text,
+        startTime: lastTime,
+        endTime: time
+      };
+      lastTime = time;
+      lastIndex = re.lastIndex;
+      res$.push(part);
+    }
+    parts = res$;
+    if (lastIndex !== cue.text.length) {
+      parts.push({
+        text: cue.text.slice(lastIndex),
+        startTime: lastTime,
+        endTime: cue.endTime
+      });
+    }
+    return parts;
+  };
   fromSelectorOrPath = function(target){
     var $track, e;
     try {
@@ -64,6 +92,7 @@
   };
   ReactVTT = {
     parse: parse,
+    separate: separate,
     fromSelectorOrPath: fromSelectorOrPath,
     Cue: require('./Cue')
   };

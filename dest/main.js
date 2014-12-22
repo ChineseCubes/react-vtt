@@ -1,12 +1,35 @@
 (function(){
-  var React, ReactVTT, Cue, ref$, div, span, parse, fromSelectorOrPath, video, audio, AudioTrack;
+  var React, ReactVTT, Cue, ref$, div, span, parse, separate, fromSelectorOrPath, video, audio, VideoTrack, AudioTrack;
   React = require('react');
   ReactVTT = require('./ReactVTT');
   Cue = React.createFactory(require('./Cue'));
   ref$ = React.DOM, div = ref$.div, span = ref$.span;
-  parse = ReactVTT.parse, fromSelectorOrPath = ReactVTT.fromSelectorOrPath;
+  parse = ReactVTT.parse, separate = ReactVTT.separate, fromSelectorOrPath = ReactVTT.fromSelectorOrPath;
   video = document.getElementsByTagName('video')[0];
   audio = document.getElementsByTagName('audio')[0];
+  VideoTrack = React.createClass({
+    displayName: 'VideoTrack',
+    getDefaultProps: function(){
+      return {
+        data: [],
+        currentTime: 0
+      };
+    },
+    render: function(){
+      var i, data;
+      return div({
+        className: 'video-track'
+      }, (function(){
+        var ref$, results$ = [];
+        for (i in ref$ = this.props.data) {
+          data = ref$[i];
+          results$.push(Cue((data.key = i, data.currentTime = this.props.currentTime, data), data.text));
+        }
+        return results$;
+      }.call(this)));
+    }
+  });
+  VideoTrack = React.createFactory(VideoTrack);
   AudioTrack = React.createClass({
     displayName: 'AudioTrack',
     getDefaultProps: function(){
@@ -47,14 +70,19 @@
         return requestAnimationFrame(update);
       };
       requestAnimationFrame(update);
-      karaoke = React.render(Cue(), document.getElementById('video-vtt'));
+      karaoke = React.render(VideoTrack(), document.getElementById('video-vtt'));
       updateKaraoke = function(time, cues){
         var cue;
         cue = cues.activeCues[0] || {
           startTime: 0,
           endTime: 0
         };
-        return karaoke.setProps((cue.currentTime = time, cue.children = span({}, cue.text), cue));
+        if (cues.activeCues[0]) {
+          return karaoke.setProps({
+            data: separate(cues.activeCues[0]),
+            currentTime: time
+          });
+        }
       };
       audioTrack = React.render(AudioTrack({
         data: audioCues
