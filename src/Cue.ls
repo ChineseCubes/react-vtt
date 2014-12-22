@@ -7,11 +7,13 @@ Cue = React.createClass do
   getDefaultProps: ->
     startTime: 0
     endTime: 0
-    time: 0
+    currentTime: 0
   render: ->
     duration = @props.endTime - @props.startTime
     progress = if duration is 0 then 0 else
-      (@props.time - @props.startTime) / duration * 100
+      (@props.currentTime - @props.startTime) / duration * 100
+    if progress < 0   then progress = 0
+    if progress > 100 then progress = 100
     div do
       className: 'cue'
       div do

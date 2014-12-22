@@ -8,7 +8,7 @@
       return {
         startTime: 0,
         endTime: 0,
-        time: 0
+        currentTime: 0
       };
     },
     render: function(){
@@ -16,7 +16,13 @@
       duration = this.props.endTime - this.props.startTime;
       progress = duration === 0
         ? 0
-        : (this.props.time - this.props.startTime) / duration * 100;
+        : (this.props.currentTime - this.props.startTime) / duration * 100;
+      if (progress < 0) {
+        progress = 0;
+      }
+      if (progress > 100) {
+        progress = 100;
+      }
       return div({
         className: 'cue'
       }, div({

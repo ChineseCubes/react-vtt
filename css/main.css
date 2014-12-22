@@ -89,25 +89,6 @@ td {
 a img {
   border: none;
 }
-.react-vtt {
-  -webkit-font-smoothing: antialiased;
-}
-.react-vtt.cues .cue {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-}
-.react-vtt.cues .cue .actived {
-  overflow: hidden;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: -0.5em;
-  color: #f90;
-}
-.react-vtt.isolated-cue {
-  display: inline-block;
-}
 .cue {
   -webkit-font-smoothing: antialiased;
 }
@@ -123,6 +104,7 @@ a img {
   top: 0;
   bottom: -0.5rem;
   overflow: hidden;
+  color: #f90 !important;
 }
 .cue > .children > .overlay * {
   color: #f90 !important;
@@ -156,9 +138,17 @@ body #wrap video {
   width: 480px;
   height: 360px;
 }
+body #wrap #video-vtt {
+  font-size: 150%;
+  font-weight: bold;
+  margin: 1em 0;
+  min-height: 1.5em;
+}
 body #wrap #audio-vtt {
   margin: 0 auto;
   width: 900px;
+  text-align: left;
+  line-height: 1.5rem;
 }
 body #wrap #video-vtt2 {
   margin: 0 auto;
@@ -169,23 +159,4 @@ body #wrap #video-vtt2 div {
   width: 480px;
   float: left;
   margin-bottom: 1em;
-}
-.react-vtt.karaoke {
-  font-size: 150%;
-  font-weight: bold;
-  margin: 1em 0;
-  min-height: 1.5em;
-}
-.react-vtt.karaoke li {
-  line-height: 1.5rem;
-}
-.react-vtt.audio-track {
-  text-align: left;
-}
-.react-vtt.audio-track li {
-  line-height: 1.5rem;
-}
-.big {
-  color: #f00;
-  font-size: 2rem;
 }

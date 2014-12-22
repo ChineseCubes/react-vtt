@@ -1,54 +1,56 @@
 React    = require 'react'
-$        = require 'jquery'
 ReactVTT = require './ReactVTT'
-Karaoke     = React.createFactory ReactVTT.Karaoke
-AudioTrack  = React.createFactory ReactVTT.AudioTrack
-IsolatedCue = React.createFactory ReactVTT.IsolatedCue
-Cue         = React.createFactory require './Cue'
+Cue      = React.createFactory require './Cue'
 
-{ div, span, a } = React.DOM
-{ parse } = ReactVTT
+{ div, span } = React.DOM
+{ parse, from-selector-or-path } = ReactVTT
 
-video  = $ \video .get!0
-audio  = $ \audio .get!0
-# the resolution of e.timeStamp in FireFox is 100x than other
-# browsers and the event fires more frequently, so we should use
-# video.currentTime instead of e.timeStamp
-React
-  ..render do
-    Karaoke do
-      target: 'track#chocolate-rain'
-      current-time: -> video.current-time
-    $ \#video-vtt .get!0
-  ..render do
-    AudioTrack do
-      target: 'track#shared-culture'
-      current-time: -> audio.current-time
-    $ \#audio-vtt .get!0
-  ..render do
-    Cue do
-      startTime: 1.0
-      endTime:   2.0
-      time:      1.45
-      div do
-        className: 'complex'
-        span {} 'This is a '
-        a do
-          className: 'big'
-          href: '#'
-          'BIG'
-        span {} ' cue.'
-    $ \#video-vtt3 .get!0
-$ '#video-vtt2 .cue' .each (i) ->
-  #node = if @childNodes?lengtn then @childNodes.0 else this
-  try
-    React.render do
-      IsolatedCue do
-        target: './assets/chocolate_rain.vtt'
-        index: i
-        match: $(this)text!
-        current-time: -> video.current-time
-      this
-  catch e
-    console.log e, this
+video = document.getElementsByTagName \video .0
+audio = document.getElementsByTagName \audio .0
+
+AudioTrack = React.createClass do
+  displayName: 'AudioTrack'
+  getDefaultProps: ->
+    data:
+      cues: []
+      active-cues: []
+    currentTime: 0
+  render: ->
+    div do
+      className: 'audio-track'
+      for i, data of @props.data.cues
+        Cue do
+          data <<< { key: i, currentTime: @props.currentTime }
+          data.text
+AudioTrack = React.createFactory AudioTrack
+
+do
+  video-cues <- parse from-selector-or-path 'track#chocolate-rain'
+  audio-cues <- parse from-selector-or-path 'track#shared-culture'
+  update = ->
+    # the resolution of e.timeStamp in FireFox is 100x than other
+    # browsers and the event fires more frequently, so we should use
+    # video.currentTime instead of e.timeStamp
+    video-time = video.currentTime
+    video-cues.update video-time
+    update-karaoke video-time, video-cues
+    audio-time = audio.currentTime
+    audio-cues.update audio-time
+    update-audio   audio-time, audio-cues
+    requestAnimationFrame update
+  requestAnimationFrame update
+
+  # Karaoke
+  karaoke = React.render Cue!, document.getElementById 'video-vtt'
+  update-karaoke = (time, cues) ->
+    cue = cues.activeCues.0 or { startTime: 0, endTime: 0 }
+    karaoke.setProps do
+      cue <<< { currentTime: time, children: span {} cue.text }
+
+  # Whole Track
+  audio-track = React.render do
+    AudioTrack data: audio-cues
+    document.getElementById 'audio-vtt'
+  update-audio = (time, cues) ->
+    audio-track.setProps currentTime: time
 

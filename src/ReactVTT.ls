@@ -1,18 +1,15 @@
-React  ?= require 'react'
-$      ?= require 'jquery'
-_      ?= require 'lodash'
-WebVTT ?= require 'vtt.js'
+$      = require 'jquery'
+_      = require 'lodash'
+WebVTT = require 'vtt.js'
 
-{p, span, ol, li} = React.DOM
-{filter} = _
-slice = Array::slice
+{ filter } = _
 
 update = (current-time) ->
-  possible-cues = slice.call @cues
+  possible-cues = Array::slice.call @cues
   @active-cues = filter possible-cues, (cue) ->
     cue.start-time <= current-time < cue.end-time
 
-parse-vtt = !(src, done) ->
+parse = !(src, done) ->
   track =
     cues: []
     active-cues: []
@@ -34,91 +31,17 @@ parse-vtt = !(src, done) ->
   else
     done null
 
-source-from-selector-or-path = (target) ->
+from-selector-or-path = (target) ->
   try
     $track = $ target
   catch e
     return target
   $track.attr \src
 
-ReactVTTMixin =
-  getDefaultProps: ->
-    current-time: -> 0
-  getInitialState: ->
-    track: null
-  componentWillMount: !->
-    # for better animation, setTimeout is better than timeupdate event
-    #$media.on \timeupdate (e) ~> @forceUpdate! if @isMounted!
-    update = ~>
-      current-time = @props.current-time!
-      if @isMounted! and current-time isnt @state.current-time
-        @state.current-time = current-time
-        @forceUpdate!
-      setTimeout update, 50ms
-    parse-vtt do
-      source-from-selector-or-path @props.target
-      !(@state.track) ~> try requestAnimationFrame update
-  render: ->
-    children = if @state.track?
-      current-time = @state.current-time ||= @props.current-time!
-      @state.track.update current-time
-      for let i, cue of @cuesToDisplay!
-        # FIXME: should deal with cue payload text tags
-        text = cue.text.replace /<.*?>/g, ''
-        ratio = switch
-        | current-time <  cue.start-time => 0
-        | current-time >= cue.end-time   => 100
-        | otherwise
-          delta = current-time - cue.start-time
-          100 * delta / (cue.end-time - cue.start-time)
-        li do
-          key: i
-          span do
-            className: 'cue'
-            text
-            span do
-              className: 'actived'
-              style:
-                width: "#ratio%"
-              text
-    else []
-    ol do
-      className: "react-vtt cues #{@props.className}"
-      children
-
 ReactVTT =
-  parse: parse-vtt
-  mixin: ReactVTTMixin
-  Karaoke: React.createClass do
-    displayName: 'ReactVTT.Karaoke'
-    mixins: [ReactVTTMixin]
-    getDefaultProps: ->
-      className: 'karaoke'
-    cuesToDisplay: -> @state.track.active-cues
-  AudioTrack: React.createClass do
-    displayName: 'ReactVTT.AudioTrack'
-    mixins: [ReactVTTMixin]
-    getDefaultProps: ->
-      className: 'audio-track'
-    cuesToDisplay: -> @state.track.cues
-  # need a better name
-  IsolatedCue: React.createClass do
-    displayName: 'ReactVTT.IsolatedCue'
-    mixins: [ReactVTTMixin]
-    getDefaultProps: ->
-      className: 'isolated-cue'
-      index: 0
-      match: null
-    cuesToDisplay: ->
-      | not @props.match => [@state.track.cues[@props.index]]
-      | otherwise
-        cue = null
-        for i from @props.index til @state.track.cues.length
-          cue := @state.track.cues[i]
-          text = cue.text.replace /<.*?>/g, ''
-          break if text is @props.match
-        [cue]
+  parse: parse
+  from-selector-or-path: from-selector-or-path
+  Cue: require './Cue'
 
-this.ReactVTT ?= ReactVTT
-module?exports = ReactVTT
+module.exports = ReactVTT
 

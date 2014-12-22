@@ -1,7 +1,6 @@
 @import 'nib'
 global-reset()
 
-@require 'ReactVTT'
 @require 'Cue'
 
 body
@@ -24,9 +23,16 @@ body
     video
       width  480px
       height 360px
+    #video-vtt
+      font-size 150%
+      font-weight bold
+      margin 1em 0
+      min-height 1.5em
     #audio-vtt
       margin 0 auto
       width 900px
+      text-align left
+      line-height 1.5rem
     #video-vtt2
       margin 0 auto
       text-align left
@@ -36,20 +42,3 @@ body
         float left
         margin-bottom 1em
 
-// custom styles
-.react-vtt
-  &.karaoke
-    font-size 150%
-    font-weight bold
-    margin 1em 0
-    min-height 1.5em
-    li
-      line-height 1.5rem
-  &.audio-track
-    text-align left
-    li
-      line-height 1.5rem
-
-.big
-  color red
-  font-size 2rem

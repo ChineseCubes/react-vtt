@@ -1,53 +1,69 @@
 (function(){
-  var React, $, ReactVTT, Karaoke, AudioTrack, IsolatedCue, Cue, ref$, div, span, a, parse, video, audio, x$;
+  var React, ReactVTT, Cue, ref$, div, span, parse, fromSelectorOrPath, video, audio, AudioTrack;
   React = require('react');
-  $ = require('jquery');
   ReactVTT = require('./ReactVTT');
-  Karaoke = React.createFactory(ReactVTT.Karaoke);
-  AudioTrack = React.createFactory(ReactVTT.AudioTrack);
-  IsolatedCue = React.createFactory(ReactVTT.IsolatedCue);
   Cue = React.createFactory(require('./Cue'));
-  ref$ = React.DOM, div = ref$.div, span = ref$.span, a = ref$.a;
-  parse = ReactVTT.parse;
-  video = $('video').get()[0];
-  audio = $('audio').get()[0];
-  x$ = React;
-  x$.render(Karaoke({
-    target: 'track#chocolate-rain',
-    currentTime: function(){
-      return video.currentTime;
-    }
-  }), $('#video-vtt').get()[0]);
-  x$.render(AudioTrack({
-    target: 'track#shared-culture',
-    currentTime: function(){
-      return audio.currentTime;
-    }
-  }), $('#audio-vtt').get()[0]);
-  x$.render(Cue({
-    startTime: 1.0,
-    endTime: 2.0,
-    time: 1.45
-  }, div({
-    className: 'complex'
-  }, span({}, 'This is a '), a({
-    className: 'big',
-    href: '#'
-  }, 'BIG'), span({}, ' cue.'))), $('#video-vtt3').get()[0]);
-  $('#video-vtt2 .cue').each(function(i){
-    var e;
-    try {
-      return React.render(IsolatedCue({
-        target: './assets/chocolate_rain.vtt',
-        index: i,
-        match: $(this).text(),
-        currentTime: function(){
-          return video.currentTime;
+  ref$ = React.DOM, div = ref$.div, span = ref$.span;
+  parse = ReactVTT.parse, fromSelectorOrPath = ReactVTT.fromSelectorOrPath;
+  video = document.getElementsByTagName('video')[0];
+  audio = document.getElementsByTagName('audio')[0];
+  AudioTrack = React.createClass({
+    displayName: 'AudioTrack',
+    getDefaultProps: function(){
+      return {
+        data: {
+          cues: [],
+          activeCues: []
+        },
+        currentTime: 0
+      };
+    },
+    render: function(){
+      var i, data;
+      return div({
+        className: 'audio-track'
+      }, (function(){
+        var ref$, results$ = [];
+        for (i in ref$ = this.props.data.cues) {
+          data = ref$[i];
+          results$.push(Cue((data.key = i, data.currentTime = this.props.currentTime, data), data.text));
         }
-      }), this);
-    } catch (e$) {
-      e = e$;
-      return console.log(e, this);
+        return results$;
+      }.call(this)));
     }
+  });
+  AudioTrack = React.createFactory(AudioTrack);
+  parse(fromSelectorOrPath('track#chocolate-rain'), function(videoCues){
+    return parse(fromSelectorOrPath('track#shared-culture'), function(audioCues){
+      var update, karaoke, updateKaraoke, audioTrack, updateAudio;
+      update = function(){
+        var videoTime, audioTime;
+        videoTime = video.currentTime;
+        videoCues.update(videoTime);
+        updateKaraoke(videoTime, videoCues);
+        audioTime = audio.currentTime;
+        audioCues.update(audioTime);
+        updateAudio(audioTime, audioCues);
+        return requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+      karaoke = React.render(Cue(), document.getElementById('video-vtt'));
+      updateKaraoke = function(time, cues){
+        var cue;
+        cue = cues.activeCues[0] || {
+          startTime: 0,
+          endTime: 0
+        };
+        return karaoke.setProps((cue.currentTime = time, cue.children = span({}, cue.text), cue));
+      };
+      audioTrack = React.render(AudioTrack({
+        data: audioCues
+      }), document.getElementById('audio-vtt'));
+      return updateAudio = function(time, cues){
+        return audioTrack.setProps({
+          currentTime: time
+        });
+      };
+    });
   });
 }).call(this);
