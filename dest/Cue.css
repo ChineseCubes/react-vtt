@@ -6,6 +6,7 @@
   position: relative;
 }
 .cue > .children > .overlay {
+  pointer-events: none;
   white-space: nowrap;
   position: absolute;
   left: 0;
