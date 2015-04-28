@@ -53,8 +53,6 @@ gulp.task \webpack <[js:app]> ->
       context: "#{path.dest}/"
       output:
         filename: 'build.js'
-      externals:
-        'vtt.js': 'WebVTT'
     .pipe gulp.dest "#{path.build}/js"
     .pipe connect.reload!
 

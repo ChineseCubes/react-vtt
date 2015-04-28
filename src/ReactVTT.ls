@@ -1,6 +1,6 @@
-$      = require 'jquery'
-_      = require 'lodash'
-WebVTT = require 'vtt.js'
+$          = require 'jquery'
+_          = require 'lodash'
+{ WebVTT } = require 'vtt.js'
 
 { filter } = _
 

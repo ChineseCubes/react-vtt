@@ -2,7 +2,7 @@
   var $, _, WebVTT, filter, update, parse, separate, fromSelectorOrPath, ReactVTT;
   $ = require('jquery');
   _ = require('lodash');
-  WebVTT = require('vtt.js');
+  WebVTT = require('vtt.js').WebVTT;
   filter = _.filter;
   update = function(currentTime){
     var possibleCues;
