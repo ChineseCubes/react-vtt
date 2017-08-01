@@ -1,64 +1,80 @@
 (function(){
-  var React, ReactVTT, Cue, ref$, div, span, parse, separate, fromSelectorOrPath, video, audio, VideoTrack, AudioTrack;
+  var React, ReactDOM, ReactVTT, Cue, parse, separate, fromSelectorOrPath, video, audio, VideoTrack, AudioTrack;
   React = require('react');
+  ReactDOM = require('react-dom');
   ReactVTT = require('./ReactVTT');
   Cue = React.createFactory(require('./Cue'));
-  ref$ = React.DOM, div = ref$.div, span = ref$.span;
   parse = ReactVTT.parse, separate = ReactVTT.separate, fromSelectorOrPath = ReactVTT.fromSelectorOrPath;
   video = document.getElementsByTagName('video')[0];
   audio = document.getElementsByTagName('audio')[0];
-  VideoTrack = React.createClass({
-    displayName: 'VideoTrack',
-    getDefaultProps: function(){
-      return {
-        data: [],
-        currentTime: 0
-      };
-    },
-    render: function(){
-      var i, data;
-      return div({
+  VideoTrack = (function(superclass){
+    var prototype = extend$((import$(VideoTrack, superclass).displayName = 'VideoTrack', VideoTrack), superclass).prototype, constructor = VideoTrack;
+    prototype.render = function(){
+      var i, data, startTime, endTime, text;
+      return React.createElement('div', {
         className: 'video-track'
       }, (function(){
         var ref$, results$ = [];
         for (i in ref$ = this.props.data) {
           data = ref$[i];
-          results$.push(Cue((data.key = i, data.currentTime = this.props.currentTime, data), data.text));
+          startTime = data.startTime, endTime = data.endTime, text = data.text;
+          results$.push(Cue({
+            key: i,
+            startTime: startTime,
+            currentTime: this.props.currentTime,
+            endTime: endTime
+          }, text));
         }
         return results$;
       }.call(this)));
+    };
+    function VideoTrack(){
+      VideoTrack.superclass.apply(this, arguments);
     }
-  });
+    return VideoTrack;
+  }(React.Component));
+  VideoTrack.defaultProps = {
+    data: [],
+    currentTime: 0
+  };
   VideoTrack = React.createFactory(VideoTrack);
-  AudioTrack = React.createClass({
-    displayName: 'AudioTrack',
-    getDefaultProps: function(){
-      return {
-        data: {
-          cues: [],
-          activeCues: []
-        },
-        currentTime: 0
-      };
-    },
-    render: function(){
-      var i, data;
-      return div({
+  AudioTrack = (function(superclass){
+    var prototype = extend$((import$(AudioTrack, superclass).displayName = 'AudioTrack', AudioTrack), superclass).prototype, constructor = AudioTrack;
+    prototype.render = function(){
+      var i, data, startTime, endTime, text;
+      return React.createElement('div', {
         className: 'audio-track'
       }, (function(){
         var ref$, results$ = [];
         for (i in ref$ = this.props.data.cues) {
           data = ref$[i];
-          results$.push(Cue((data.key = i, data.currentTime = this.props.currentTime, data), data.text));
+          startTime = data.startTime, endTime = data.endTime, text = data.text;
+          results$.push(Cue({
+            key: i,
+            startTime: startTime,
+            currentTime: this.props.currentTime,
+            endTime: endTime
+          }, text));
         }
         return results$;
       }.call(this)));
+    };
+    function AudioTrack(){
+      AudioTrack.superclass.apply(this, arguments);
     }
-  });
+    return AudioTrack;
+  }(React.Component));
+  AudioTrack.defaultProps = {
+    data: {
+      cues: [],
+      activeCues: []
+    },
+    currentTime: 0
+  };
   AudioTrack = React.createFactory(AudioTrack);
   parse(fromSelectorOrPath('track#chocolate-rain'), function(videoCues){
     return parse(fromSelectorOrPath('track#shared-culture'), function(audioCues){
-      var update, karaoke, updateKaraoke, audioTrack, updateAudio;
+      var update, elem0, karaoke, updateKaraoke, elem1, audioTrack, updateAudio;
       update = function(){
         var videoTime, audioTime;
         videoTime = video.currentTime;
@@ -70,28 +86,42 @@
         return requestAnimationFrame(update);
       };
       requestAnimationFrame(update);
-      karaoke = React.render(VideoTrack(), document.getElementById('video-vtt'));
+      elem0 = document.getElementById('video-vtt');
+      karaoke = ReactDOM.render(VideoTrack(), elem0);
       updateKaraoke = function(time, cues){
-        var cue;
+        var cue, karaoke;
         cue = cues.activeCues[0] || {
           startTime: 0,
           endTime: 0
         };
         if (cues.activeCues[0]) {
-          return karaoke.setProps({
+          return karaoke = ReactDOM.render(VideoTrack({
             data: separate(cues.activeCues[0]),
             currentTime: time
-          });
+          }), elem0);
         }
       };
-      audioTrack = React.render(AudioTrack({
+      elem1 = document.getElementById('audio-vtt');
+      audioTrack = ReactDOM.render(AudioTrack({
         data: audioCues
-      }), document.getElementById('audio-vtt'));
+      }), elem1);
       return updateAudio = function(time, cues){
-        return audioTrack.setProps({
+        return ReactDOM.render(AudioTrack({
+          data: audioCues,
           currentTime: time
-        });
+        }), elem1);
       };
     });
   });
+  function extend$(sub, sup){
+    function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+    (sub.prototype = new fun).constructor = sub;
+    if (typeof sup.extended == 'function') sup.extended(sub);
+    return sub;
+  }
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
 }).call(this);
