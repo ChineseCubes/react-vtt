@@ -50,6 +50,7 @@ gulp.task \js:app ->
 gulp.task \webpack <[js:app]> ->
   gulp.src "#{path.dest}/main.js"
     .pipe webpack do
+      #devtool: \source-map
       context: "#{path.dest}/"
       output:
         filename: 'build.js'

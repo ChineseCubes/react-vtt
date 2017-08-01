@@ -1,6 +1,6 @@
 {
   "name": "react-vtt",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A React component for displaying WebVTT tracks.",
   "main": "dest/ReactVTT.js",
   "keywords": [
@@ -36,7 +36,8 @@
   "dependencies": {
     "jquery": "^2.1.1",
     "lodash": "^2.4.1",
-    "react": "^0.12.2",
-    "vtt.js": "^0.12.1"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "vtt.js": "^0.13.0"
   }
 }
