@@ -26,7 +26,7 @@
     "gulp-flatten": "0.0.2",
     "gulp-jade": "^0.4.2",
     "gulp-livescript": "^0.2.1",
-    "gulp-stylus": "^1.3.3",
+    "gulp-stylus": "^2.7.0",
     "gulp-util": "^2.2.20",
     "gulp-webpack": "^0.4.1",
     "main-bower-files": "^1.0.2",
