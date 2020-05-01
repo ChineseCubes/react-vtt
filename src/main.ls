@@ -3,8 +3,7 @@ ReactDOM = require 'react-dom'
 ReactVTT = require './ReactVTT'
 Cue      = React.createFactory require './Cue'
 
-{ hello } = require './hello'
-console.log(hello);
+{ Hello } = require './hello'
 
 { parse, separate, from-selector-or-path } = ReactVTT
 
@@ -82,4 +81,8 @@ do
         data: audio-cues
         currentTime: time
       elem1
+
+  # ES6 component
+  elem2 = document.getElementById 'hello'
+  ReactDOM.render Hello!, elem2
 
