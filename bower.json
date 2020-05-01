@@ -3,7 +3,7 @@
   "version": "0.1.11",
   "homepage": "https://github.com/ChineseCubes/react-vtt",
   "authors": [
-    "caasi Huang <caasi@chinesecubes.com>"
+    "caasi Huang <caasi.igd@gmail.com>"
   ],
   "main": [
     "dest/ReactVTT.js",

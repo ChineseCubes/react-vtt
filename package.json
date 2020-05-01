@@ -14,7 +14,7 @@
     "prepublish": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "caasi Huang <caasi@chinesecubes.com>",
+  "author": "caasi Huang <caasi.igd@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.9.6",
