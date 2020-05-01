@@ -1,0 +1,8 @@
+node_modules/
+dest/
+css/
+js/
+npm-debug.log
+*.swp
+.DS_Store
+index.html

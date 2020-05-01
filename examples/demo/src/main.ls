@@ -1,9 +1,7 @@
 React    = require 'react'
 ReactDOM = require 'react-dom'
-ReactVTT = require './ReactVTT'
-Cue      = React.createFactory require './Cue'
-
-{ Hello } = require './hello'
+ReactVTT = require '../../../dest/ReactVTT'
+Cue      = React.createFactory require '../../../dest/Cue'
 
 { parse, separate, from-selector-or-path } = ReactVTT
 
@@ -81,8 +79,4 @@ do
         data: audio-cues
         currentTime: time
       elem1
-
-  # ES6 component
-  elem2 = document.getElementById 'hello'
-  ReactDOM.render Hello!, elem2
 
