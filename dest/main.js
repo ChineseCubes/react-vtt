@@ -1,15 +1,16 @@
 (function(){
-  var React, ReactDOM, ReactVTT, Cue, parse, separate, fromSelectorOrPath, video, audio, VideoTrack, AudioTrack;
+  var React, ReactDOM, ReactVTT, Cue, Hello, parse, separate, fromSelectorOrPath, video, audio, VideoTrack, AudioTrack;
   React = require('react');
   ReactDOM = require('react-dom');
   ReactVTT = require('./ReactVTT');
   Cue = React.createFactory(require('./Cue'));
+  Hello = require('./hello').Hello;
   parse = ReactVTT.parse, separate = ReactVTT.separate, fromSelectorOrPath = ReactVTT.fromSelectorOrPath;
   video = document.getElementsByTagName('video')[0];
   audio = document.getElementsByTagName('audio')[0];
   VideoTrack = (function(superclass){
     var prototype = extend$((import$(VideoTrack, superclass).displayName = 'VideoTrack', VideoTrack), superclass).prototype, constructor = VideoTrack;
-    prototype.render = function(){
+    VideoTrack.prototype.render = function(){
       var i, data, startTime, endTime, text;
       return React.createElement('div', {
         className: 'video-track'
@@ -40,7 +41,7 @@
   VideoTrack = React.createFactory(VideoTrack);
   AudioTrack = (function(superclass){
     var prototype = extend$((import$(AudioTrack, superclass).displayName = 'AudioTrack', AudioTrack), superclass).prototype, constructor = AudioTrack;
-    prototype.render = function(){
+    AudioTrack.prototype.render = function(){
       var i, data, startTime, endTime, text;
       return React.createElement('div', {
         className: 'audio-track'
@@ -74,7 +75,7 @@
   AudioTrack = React.createFactory(AudioTrack);
   parse(fromSelectorOrPath('track#chocolate-rain'), function(videoCues){
     return parse(fromSelectorOrPath('track#shared-culture'), function(audioCues){
-      var update, elem0, karaoke, updateKaraoke, elem1, audioTrack, updateAudio;
+      var update, elem0, karaoke, updateKaraoke, elem1, audioTrack, updateAudio, elem2;
       update = function(){
         var videoTime, audioTime;
         videoTime = video.currentTime;
@@ -105,12 +106,14 @@
       audioTrack = ReactDOM.render(AudioTrack({
         data: audioCues
       }), elem1);
-      return updateAudio = function(time, cues){
+      updateAudio = function(time, cues){
         return ReactDOM.render(AudioTrack({
           data: audioCues,
           currentTime: time
         }), elem1);
       };
+      elem2 = document.getElementById('hello');
+      return ReactDOM.render(Hello(), elem2);
     });
   });
   function extend$(sub, sup){

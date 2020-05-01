@@ -3,7 +3,7 @@
   React = require('react');
   Cue = (function(superclass){
     var prototype = extend$((import$(Cue, superclass).displayName = 'Cue', Cue), superclass).prototype, constructor = Cue;
-    prototype.render = function(){
+    Cue.prototype.render = function(){
       var duration, progress;
       duration = this.props.endTime - this.props.startTime;
       progress = duration === 0
