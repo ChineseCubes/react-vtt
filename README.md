@@ -4,8 +4,19 @@ A React component for displaying WebVTT tracks.
 
 ## Install
 
-```bash
+Currently it's not possible to install this package from npm.
+
+If you want to use an older version, please do:
+
+```
 bower install react-vtt
+```
+
+## Development
+
+```bash
+npm install
+npm start
 ```
 
 ## Usage
