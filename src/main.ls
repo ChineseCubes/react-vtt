@@ -3,6 +3,9 @@ ReactDOM = require 'react-dom'
 ReactVTT = require './ReactVTT'
 Cue      = React.createFactory require './Cue'
 
+{ hello } = require './hello'
+console.log(hello);
+
 { parse, separate, from-selector-or-path } = ReactVTT
 
 video = document.getElementsByTagName \video .0

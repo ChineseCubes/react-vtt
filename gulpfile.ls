@@ -4,6 +4,7 @@ webpack    = require \gulp-webpack
 connect    = require \gulp-connect
 gutil      = require \gulp-util
 livescript = require \gulp-livescript
+babel      = require \gulp-babel
 stylus     = require \gulp-stylus
 jade       = require \gulp-jade
 
@@ -42,10 +43,17 @@ gulp.task \js:vendor <[bower]> ->
     .pipe gulp-concat 'vendor.js'
     .pipe gulp.dest "#{path.build}/js"
 
-gulp.task \js:app ->
+gulp.task \js:livescript ->
   gulp.src "#{path.src}/**/*.ls"
     .pipe livescript!
     .pipe gulp.dest "#{path.dest}/"
+
+gulp.task \js:ecmascript ->
+  gulp.src "#{path.src}/**/*.js"
+    .pipe babel { presets: <[@babel/preset-env @babel/preset-react]> }
+    .pipe gulp.dest "#{path.dest}/"
+
+gulp.task \js:app <[js:livescript js:ecmascript]>
 
 gulp.task \webpack <[js:app]> ->
   gulp.src "#{path.dest}/main.js"
