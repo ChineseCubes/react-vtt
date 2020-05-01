@@ -40,8 +40,8 @@
   "dependencies": {
     "jquery": "^3.5.0",
     "lodash": "^4.17.13",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "vtt.js": "^0.13.0"
   }
 }
